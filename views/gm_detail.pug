@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  strong Sessions for #{gameMaster.name}
+  #sessionsTable
+    table
+      tbody
+      each item in gm_sessions
+        tr
+          td #{item.name}
+          td
+            a(href='/timeline/'+item.id) Load
+          td
+            a(href='/gamesession/'+item.id+'/delete') Delete
+      else
+        tr
+          td No sessions
+    p
+      a(href='/gamesession/create') Create new session
+
+
+
+

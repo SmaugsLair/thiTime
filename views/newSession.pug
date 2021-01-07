@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    strong New session for #{gameMaster.name}
+
+    form(id='newSessionForm' method='POST' action='', onsubmit='return validateNewSession();')
+        div
+            label(for='sessionName') Session:
+            input.sessionName(type='text', name='sessionName' value=(undefined===session ? '' : session.name))
+            button(type='submit') Submit
+            a(href='/gm') Cancel
+        if errors
+            ul
+                for error in errors
+                    li!= error.msg

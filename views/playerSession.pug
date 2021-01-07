@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  strong
+    label(for='gameSession') Session:
+    output#gameSession  #{gameSession.name}
+    br
+    label(for='gmName') GameMaster:
+    output#gmName  #{gm.name}
+    br
+  #timelineTable
+    table
+      thead
+        tr
+          th Character/NPC/Event
+          th Stun
+          th Time
+          th Next Action
+      tbody
+        each item in timeline
+            tr(style="background-color:"+item.color)
+              td #{item.name}
+              td #{item.stun}
+              td #{item.time}
+              td #{item.nextAction}
+        else
+          tr
+            td Empty Timeline
+            td ...
+            td ...
+            td ...

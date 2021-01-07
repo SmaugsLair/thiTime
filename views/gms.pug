@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  #atdTable
+    table
+      thead
+        th Game Master
+      tbody
+        each item in gm_list
+          tr
+            td
+              li
+                a(href=item.url) #{item.name}
+        tr
+          td Test
+
+
+
+

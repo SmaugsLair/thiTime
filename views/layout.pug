@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  #container
+    #header
+      h1 The Hero Instant Time Tracker
+    #wrapper
+      #content
+        block content
+    #navigation
+      p
+        strong Navigation Menu
+      ul
+        if (gameMaster)
+          li
+            a(href='/logout') Logout #{gameMaster.name}
+          li
+            a(href='/gm') Sessions
+          li
+            a(href='/gm/collection') Collection
+        else
+          li
+            a(href='/login') GameMaster Login
+        li
+          a(href='/playerSessions') Player Session views
+  script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+  script(src='/javascripts/global.js')

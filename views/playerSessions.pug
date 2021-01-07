@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  #gmTable
+    table
+      thead
+        th Game Master
+        th Sessions
+      tbody
+        each gm in gmList
+          tr
+            td #{gm.name}
+            td
+              ul
+                each item in sessionList
+                  if (item.gameMasterId.equals(gm._id))
+                    li
+                      a(href='/playerSession/'+gm._id+'/'+item._id) #{item.name}
+
+
+
+
+
+

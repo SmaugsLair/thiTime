@@ -1,0 +1,37 @@
+Tables:
+    ActionTimeDefault //Stores defaults in the database rather than hardcoding them so easier to change
+        name: string
+        time: int
+
+    GameMaster //Anything else?
+        name: string
+
+    GameSession //Anything else?
+        gameMaster: GameMaster //owner object
+        name: string
+
+    SavedEvent //
+        gameMaster: GameMaster //owner object
+        eventType: enum //player, npc, gm
+        name: string
+        color: string
+
+    SavedDelta
+        timeLineEvent: SavedEvent //owner object
+        name: string //will match one of ActionTimeDefault
+        delta: int
+
+
+    TimeLineEvent //Anything else?
+        gameSession: GameSession //owner object
+        eventType: enum //player, npc, gm
+        name: string
+        time: int
+        color: string
+        stun: int
+        hidden: boolean
+
+    ActionTimeDelta //player events only?
+        timeLineEvent: TimeLineEvent //owner object
+        name: string //will match one of ActionTimeDefault
+        delta: int

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  strong #{gameMaster.name}'s event collection
+  #collectedEvents
+    table
+      tbody
+      each item in collectedEvents
+        form(method='POST')
+          tr
+            td #{item.name}
+            td
+              each actionTime in actionTimes
+                - var value = item.deltas.get(actionTime.name)
+                - var show = (value != 0)
+                if show
+                  output #{actionTime.name}: #{value} &nbsp;
+            td(style="background-color:"+item.color) &nbsp;&nbsp;&nbsp;
+            td
+              button(type='submit', formaction='/gm/' + item._id + '/deleteEvent') Delete
+      else
+        tr
+          td No collected events
+
+
+
+

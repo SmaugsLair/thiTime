@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    strong Delete session
+
+    form(method='POST' action='')
+        input#gameSessionId(type='hidden',name='gameSessionId', required='true', value=gameSession._id )
+
+        if sessionEvents!=null && sessionEvents.length > 0
+            p Session: #{gameSession.name} has the following events:
+            ul
+                each item in sessionEvents
+                    li #{item.name}
+        else
+            p Session: #{gameSession.name} has no events
+        button(type='submit') Confirm delete
+        a(href='/gm') Cancel

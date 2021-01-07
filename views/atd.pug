@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  #atdTable
+    table
+      thead
+        th Action
+        th Time
+      tbody
+        each item in atd_list
+          tr
+            td #{item.name}
+            td #{item.time}
+
+
+
+

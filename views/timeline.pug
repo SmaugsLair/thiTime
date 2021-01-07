@@ -1,0 +1,107 @@
+extends layout
+
+block content
+  strong
+    div Session: #{gameSession.name}
+    label(for='gmName') GameMaster:
+    a(href='/gm') #{gameMaster.name}
+  #timelineTable
+    table
+      thead
+        tr
+          th Character/NPC/Event
+          th Stun
+          th ...
+          th Hidden
+          th Time
+          th Next Action
+          th Deltas
+          th Color
+          th Update
+          th Clone
+          th Delete
+          th Collect
+      tbody
+        each item, index in timeline
+          form(method='POST' id='updateEventForm')
+            tr(style="background-color:"+item.color)
+              td
+                input.name(disabled=true, value=item.name)
+              td
+                input.stun(type='number', name='stun', min=0, max=99, value=item.stun, oninput="stunChange('"+index+"')"
+                  id='stun'+index)
+              td
+                select.actionTime(name='actionTime', oninput="actionChange('"+index+"')", id='actionTime'+index)
+                  option(value=0) Choose action
+                  each actionTime in actionTimes
+                    - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                    option(value=total) #{actionTime.name} (#{total})
+              td
+                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden checked=item.hidden oninput="hiddenChange('"+index+"')")
+              td
+                input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time,
+                  oninput="timeChange('"+index+"')")
+              td
+                input.nextAction(disabled=true, value=item.nextAction, type='number', min=-999, max=999)
+              td
+                button(onclick="showOverlay('"+index+"'); return false;") Edit
+              td
+                input.color(type='color', name='color', value=item.color, id='color'+index, oninput="colorChange('"+index+"')")
+              td
+                button(type='submit', disabled=true, id='tlbtn'+index, formaction='/timeline/'+item._id+'/update') Update
+              td
+                button(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone') Clone
+              td
+                button(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete') Delete
+              td
+                button(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect') Collect
+        else
+          tr
+            td Empty Timeline
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+        tr
+          form(method='POST' id='newEventForm' action='/timeline/'+gameSession._id+'/create',
+                onsubmit='return validateNewEvent()')
+            td
+              input.newEventName(type='text', placeholder='New event', name='newEventName', value=(undefined===newEvent ? '' : newEvent.name))
+            td ...
+            td ...
+            td ...
+            td
+              input.newEventTime(type='text', placeholder='Time', name='newEventTime', size=4, value=(undefined===newEvent ? '' : newEvent.time))
+            td ...
+            td
+            td ...
+            td
+              button(type='submit') Add
+            td
+            td
+            td
+              if (collectedEvents)
+                select(name='importEvent', oninput='document.getElementById("newEventForm").submit()')
+                  option(value='unselected') Choose import
+                    each eventItem in collectedEvents
+                      option(value=eventItem._id) #{eventItem.name}
+
+  each item, index in timeline
+    div.overlay(id='overlay'+index)
+      div.centered Deltas for #{item.name}
+        form(method='POST' id='updateDeltasForm' action='/timeline/'+item._id+'/'+gameSession._id+'updateDeltas')
+          table
+            thead
+              tr
+                th Action
+                th Delta
+            tbody
+              each actionTime in actionTimes
+                tr
+                  th #{actionTime.name}
+                  th
+                    input(type='number', name=actionTime.name, min=-999, max=999, value=item.deltas.get(actionTime.name))
+          button(type='submit') Update
+          button(onclick="hideOverlay('"+index+"');return false;") Cancel
