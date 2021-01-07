@@ -1,0 +1,52 @@
+Steps to install:
+
+1) Download and install the LTS release of Node.js from nodejs.org, right on the welcome page. 
+   Choose to intall the suppplementary tools (default).
+
+
+2) Download and install MongoDB. https://www.mongodb.com/try/download/community. Choose to 
+   install it as a service (default).
+
+3) Start MongoDB Compass, hit the big green Connect button which will connect you to the
+   just installled service and enter:
+	Database name: thiTime
+	Collection: gamemastermodels
+   You can close Compass, or leave it open if you want to poke around in the data as you 
+   run the app
+
+4) Create a folder in your harddrive to install the code into. I will be using the example of 
+   C:/Projects/thiTime for the rest of this doc.
+
+5) Go to github.com/SmaugsLair/thiTime. Hit the green Code button and download the zip 
+   (or clone if you know git)
+
+6) Extract the contents into C:/Projects. Assuming standard unzipping you will have a new
+   directory called C:/Projects:/thiTime-main
+
+7) Open up a command prompt and navigate to this new folder:
+   cd \Projects\thiTime-main
+
+8) Run these two commands on the command prompt:
+   node defaultSetup.js mongodb://127.0.0.1/thiTime
+   node gmSetup.js mongodb://127.0.0.1/thiTime
+   This will populate the database with a couple of gms and the default action times.
+
+9) on the command line run this:
+   npm start
+   
+   Leave this running, then open your browser to localhost:3000. 
+   Click on GM login, enter deadandy, no password required right now.
+   Start creating!
+
+   If you want to see a player view, click on Player Sessions
+		
+
+ 
+
+
+
+
+
+
+
+ 
