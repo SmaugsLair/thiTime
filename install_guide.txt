@@ -15,7 +15,7 @@ Steps to install:
    run the app
 
 4) Create a folder in your harddrive to install the code into. I will be using the example of 
-   C:/Projects/thiTime for the rest of this doc.
+   C:/Projects/thiTime-main for the rest of this doc.
 
 5) Go to github.com/SmaugsLair/thiTime. Hit the green Code button and download the zip 
    (or clone if you know git)
