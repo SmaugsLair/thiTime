@@ -31,7 +31,15 @@ app.use(session({
 
 //Import the mongoose module
 var mongoose = require('mongoose');
-
+if (process.env.NODE_ENV === "development") {
+  console.log('running in dev');
+}
+else if (process.env.NODE_ENV === "production") {
+  console.log('running in prod');
+}
+else {
+  console.log('process.env.NODE_ENV:'+process.env.NODE_ENV);
+}
 //Set up default mongoose connection
 var mongoDB = 'mongodb://127.0.0.1/thiTime';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
