@@ -40,13 +40,13 @@ else if (process.env.NODE_ENV === "production") {
   console.log('running in prod');
   var config = JSON.parse(process.env.APP_CONFIG);
   mongoDB = 'mongodb://' + config.mongo.user + ':' + encodeURIComponent(process.env.dbpw)
-      + '@' + config.mongo.hostString;
+      + '@' + config.mongo.hostString + '/thiTime';
 }
 else {
   console.log('process.env.NODE_ENV:'+process.env.NODE_ENV);
 }
 
-console.log('mongoDb:'+mongoDB);
+//console.log('mongoDb:'+mongoDB);
 //Set up default mongoose connection
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
