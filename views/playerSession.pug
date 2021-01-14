@@ -15,14 +15,18 @@ block content
           th Character/NPC/Event
           th Stun
           th Time
-          th Next Action
+          th React
       tbody
         each item in timeline
             tr(style="background-color:"+item.color)
-              td #{item.name}
-              td #{item.stun}
-              td #{item.time}
-              td #{item.nextAction}
+              td
+                input(disabled=true, value=item.name)
+              td
+                input(disabled=true, value=item.stun)
+              td
+                input(disabled=true, value=item.time)
+              td
+                input(disabled=true, value=item.nextAction)
         else
           tr
             td Empty Timeline

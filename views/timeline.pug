@@ -14,7 +14,7 @@ block content
           th ...
           th Hidden
           th Time
-          th Next Action
+          th React
           th Deltas
           th Color
           th Update
@@ -91,7 +91,7 @@ block content
   each item, index in timeline
     div.overlay(id='overlay'+index)
       div.centered Deltas for #{item.name}
-        form(method='POST' id='updateDeltasForm' action='/timeline/'+item._id+'/'+gameSession._id+'updateDeltas')
+        form(method='POST' id='updateDeltasForm' action='/timeline/'+item._id+'/'+gameSession._id+'/updateDeltas')
           table
             thead
               tr
