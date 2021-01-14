@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === "development") {
 else if (process.env.NODE_ENV === "production") {
   console.log('running in prod');
   var config = JSON.parse(process.env.APP_CONFIG);
-  mongoDB = 'mongodb://' + config.mongo.user + ':' + encodeURIComponent('thiTime42')
+  mongoDB = 'mongodb://' + config.mongo.user + ':' + encodeURIComponent(process.env.dbpw)
       + '@' + config.mongo.hostString;
 }
 else {
