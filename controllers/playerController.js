@@ -75,9 +75,9 @@ exports.playerSession = function(req, res) {
         res.render('playerSession', { title: 'Timeline',
             gameSession: results.gameSession,
             timeline: results.timeline,
-            gm: results.gameMaster
+            gm: results.gameMaster,
+            refresh: 'refresh',
+            content: '60'
         } );
     });
 };
-
-

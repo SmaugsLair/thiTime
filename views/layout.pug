@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    meta(http-equiv=refresh, content=content)
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   #container
@@ -27,3 +28,5 @@ html
           a(href='/playerSessions') Player Session views
   script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
   script(src='/javascripts/global.js')
+  if (refresh)
+    script(src='/javascripts/refresh.js')

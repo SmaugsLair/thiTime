@@ -8,6 +8,8 @@ block content
     label(for='gmName') GameMaster:
     output#gmName  #{gm.name}
     br
+    output#timeout
+    br
   #timelineTable
     table
       thead
@@ -18,15 +20,15 @@ block content
           th React
       tbody
         each item in timeline
-            tr(style="background-color:"+item.color)
+            tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
               td
                 input(disabled=true, value=item.name)
               td
                 input(disabled=true, value=item.stun)
               td
                 input(disabled=true, value=item.time)
-              td
-                input(disabled=true, value=item.reactTime)
+              td.lastEvent
+                input.reactTime(disabled=true, value=item.reactTime)
         else
           tr
             td Empty Timeline
