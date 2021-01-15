@@ -24,7 +24,7 @@ block content
       tbody
         each item, index in timeline
           form(method='POST' id='updateEventForm')
-            tr(style="background-color:"+item.color)
+            tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
               td
                 input.name(disabled=true, value=item.name)
               td
@@ -41,8 +41,8 @@ block content
               td
                 input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time,
                   oninput="timeChange('"+index+"')")
-              td
-                input.nextAction(disabled=true, value=item.nextAction, type='number', min=-999, max=999)
+              td.lastEvent
+                input.reactTime(disabled=true, value=item.reactTime, type='number', min=-999, max=999)
               td
                 button(onclick="showOverlay('"+index+"'); return false;") Edit
               td

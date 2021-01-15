@@ -52,12 +52,25 @@ exports.playerSession = function(req, res) {
             return next(err);
         }
         // Successful, so render.
-        var firstTime = null;
-        for (var item of results.timeline) {
-            if (firstTime == null) {
-                firstTime = item.time;
+
+        var lastEventId = results.gameSession.lastEventId;
+        if (lastEventId) {
+            var lastEventTime;
+            for (var item of results.timeline) {
+                if (lastEventId.equals(item._id)) {
+                    console.log('last event was for:'+item.name);
+                    lastEventTime = item.time;
+                    item.lastEvent = true;
+                }
             }
-            item.nextAction = item.time - firstTime;
+            for (var item of results.timeline) {
+                item.reactTime = lastEventTime - item.time;
+            }
+        }
+        else {
+            for (var item of results.timeline) {
+                item.reactTime = 0;
+            }
         }
         res.render('playerSession', { title: 'Timeline',
             gameSession: results.gameSession,

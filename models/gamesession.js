@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 var GameSessionSchema = new Schema({
     name: {type: String, required: true},
     gameMasterId : {type: Schema.Types.ObjectId, ref: 'GameMaster', required: true},
+    lastEventId: {type: Schema.Types.ObjectId, ref: 'TimelineEvent', required: false},
 });
 
 GameSessionSchema.pre('deleteOne', function(next) {

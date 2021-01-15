@@ -45,19 +45,24 @@ exports.load = function(req, res, next) {
             return next(err);
         }
         // Successful, so render.
-        var firstTime = null;
-        for (var item of results.timeline) {
-            if (firstTime == null) {
-                firstTime = item.time;
-            }
-            item.nextAction = item.time - firstTime;
-            //console.log(item.name);
-           /* if (item.deltas) {
-                for (var delta of item.deltas) {
-                    console.log('delta:'+delta);
+        var lastEventId = results.gameSession.lastEventId;
+        if (lastEventId) {
+            var lastEventTime;
+            for (var item of results.timeline) {
+                if (lastEventId.equals(item._id)) {
+                    console.log('last event was for:'+item.name);
+                    lastEventTime = item.time;
+                    item.lastEvent = true;
                 }
-                item.deltas.set('Repair', 5);
-            }*/
+            }
+            for (var item of results.timeline) {
+                item.reactTime = lastEventTime - item.time;
+            }
+        }
+        else {
+            for (var item of results.timeline) {
+                item.reactTime = 0;
+            }
         }
         //Added in the pug, keeping this here to remind me how to do it if needed elsewhere
         //var unselected = new ActionTimeDefault(
@@ -143,6 +148,7 @@ exports.timeline_event_update = function(req, res, next) {
             return next(err);
         }
         var actionParams;
+        var sessionParam; //To update the session with the last event if an action was fired
 
 
         //Need to only change one of the time properties at a time
@@ -190,15 +196,37 @@ exports.timeline_event_update = function(req, res, next) {
                 actionTime = Number(actionTime) + Number(results.timeLineEvent.time);
                 console.log('new actionTime:' + actionTime);
                 actionParams = {time: actionTime};
+                sessionParam = {lastEventId: results.timeLineEvent._id};
             }
 
         }
         else {
             actionParams = {stun: stun};
         }
-        console.log('actionParams :'+actionParams);
+        //console.log('actionParams :'+actionParams);
+        if (sessionParam) {
+            async.parallel({
+                gameSessionUpdate: function(callback) {
+                    if (sessionParam) {
+                        GameSession.findByIdAndUpdate(results.timeLineEvent.gameSessionId, sessionParam, {})
+                            .exec(callback);
+                    }
+                },
+                timelineUpdate: function(callback) {
+                    if (actionParams) {
+                        TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {})
+                            .exec(callback);
+                    }
+                }
+            }, function(err, updates) {
+                if (err) {
+                    return next(err);
+                }
+                //res.redirect('/timeline/' + results.timeLineEvent.gameSessionId);
+            });
 
-        if (actionParams) {
+        }
+        else if (actionParams) {
             TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {}, function (err) {
                 if (err) {
                     return next(err);
@@ -206,7 +234,6 @@ exports.timeline_event_update = function(req, res, next) {
             });
         }
         res.redirect('/timeline/'+results.timeLineEvent.gameSessionId);
-        //});
 
     });
 

@@ -119,3 +119,12 @@ div.centered {
 }
 
 table {border-collapse: collapse;}
+
+tr.lastEvent td {
+  border-bottom: 3px solid white;
+  border-top: 3px solid white;
+}
+
+tr.lastEvent td.lastEvent {
+  background-color: white;
+}
