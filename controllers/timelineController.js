@@ -91,7 +91,8 @@ exports.timeline_event_create = function(req, res, next) {
                 name: req.body.newEventName,
                 gameSessionId: req.params.gsid,
                 time: req.body.newEventTime,
-                color: '#808080'
+                color: '#808080',
+                hidden: true
             }
         );
 
@@ -113,7 +114,8 @@ exports.timeline_event_create = function(req, res, next) {
                         gameSessionId: req.params.gsid,
                         time: 0,
                         color: collectedEvent.color,
-                        deltas: collectedEvent.deltas
+                        deltas: collectedEvent.deltas,
+                        hidden: true
                     }
                 );
                 timeLineEvent.save(function (err) {
