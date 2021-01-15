@@ -10,7 +10,7 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
-    GameMaster.findOne({ name: req.body.username/*, password: req.body.password*/ }, function(err, gameMaster) {
+    GameMaster.findOne({ name: req.body.username, password: req.body.password }, function(err, gameMaster) {
         if (!gameMaster) {
             req.session.reset();
             res.render('login', { error: 'Invalid credentials.' });
