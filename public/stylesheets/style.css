@@ -125,6 +125,26 @@ tr.lastEvent td {
   border-top: 3px solid white;
 }
 
+table.playerView {
+  width: auto;
+}
+table.playerView th {
+  width: 1%;
+  white-space: nowrap;
+}
+table.playerView td.number,table.playerView td.lastEvent {
+  background-color:rgba(255,255,255,0.6);
+  text-align: center;
+}
+
 tr.lastEvent td.lastEvent {
   background-color: white;
+}
+
+button.image {
+  padding: 0px;
+}
+
+img.button {
+  padding: 0px;
 }

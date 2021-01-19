@@ -10,28 +10,36 @@ block content
     br
     output#timeout
     br
+    input#lastEventDate(type='hidden', value=gameSession.lastEventDate.getTime())
+    input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
-    table
+    table.playerView
       thead
         tr
-          th Character/NPC/Event
-          th Stun
-          th Time
-          th React
+          th.name Character/NPC/Event
+          th.min Stun
+          th.action Actions
+          th.min Time
+          th.min React
       tbody
         each item in timeline
             tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
               td
                 input(disabled=true, value=item.name)
+              td.number #{item.stun}
               td
-                input(disabled=true, value=item.stun)
-              td
-                input(disabled=true, value=item.time)
-              td.lastEvent
-                input.reactTime(disabled=true, value=item.reactTime)
+                select.actionTime(name='actionTime', id='actionTime' + index)
+                  option(value=0) Action (*Reaction)
+                  each actionTime in actionTimes
+                    - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                    - var reaction = (total < item.reactTime ? '*' : '')
+                    option(value=total) #{actionTime.name} (#{total}#{reaction})
+              td.number #{item.time}
+              td.lastEvent #{item.reactTime}
         else
           tr
             td Empty Timeline
+            td ...
             td ...
             td ...
             td ...

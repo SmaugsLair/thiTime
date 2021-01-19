@@ -81,53 +81,49 @@ exports.load = function(req, res, next) {
 };
 
 exports.timeline_event_create = function(req, res, next) {
+    var timeLineEvent = new TimeLineEvent(
+        {
+            name: req.body.newEventName,
+            gameSessionId: req.params.gsid,
+            time: req.body.newEventTime,
+            color: '#808080',
+            hidden: true
+        });
+
+    timeLineEvent.save(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/timeline/' + req.params.gsid);
+    });
+}
+
+
+
+exports.timeline_event_import = function(req, res, next) {
 
     var importEventID = req.body.importEvent;
     console.log('importEventID:'+importEventID);
-
-    if (importEventID=='unselected') {
-        var timeLineEvent = new TimeLineEvent(
-            {
-                name: req.body.newEventName,
-                gameSessionId: req.params.gsid,
-                time: req.body.newEventTime,
-                color: '#808080',
-                hidden: true
-            }
-        );
-
-        timeLineEvent.save(function (err) {
-            if (err) {
-                return next(err);
-            }
-            res.redirect('/timeline/' + req.params.gsid );
-        });
-    }
-    else {
-
-        CollectedEvent.findById(importEventID)
-            .exec(function (err, collectedEvent) {
-                if (err) { return next(err); }
-                var timeLineEvent = new TimeLineEvent(
-                    {
-                        name: collectedEvent.name,
-                        gameSessionId: req.params.gsid,
-                        time: 0,
-                        color: collectedEvent.color,
-                        deltas: collectedEvent.deltas,
-                        hidden: true
-                    }
-                );
-                timeLineEvent.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    res.redirect('/timeline/' + req.params.gsid);
-                });
+    CollectedEvent.findById(importEventID)
+        .exec(function (err, collectedEvent) {
+            if (err) { return next(err); }
+            var timeLineEvent = new TimeLineEvent(
+                {
+                    name: collectedEvent.name,
+                    gameSessionId: req.params.gsid,
+                    time: 0,
+                    color: collectedEvent.color,
+                    deltas: collectedEvent.deltas,
+                    hidden: true
+                }
+            );
+            timeLineEvent.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/timeline/' + req.params.gsid);
             });
-    }
-
-
+        });
 }
 
 exports.timeline_event_update = function(req, res, next) {
@@ -149,13 +145,59 @@ exports.timeline_event_update = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        var actionParams;
+        //var actionParams = [];
         var sessionParam; //To update the session with the last event if an action was fired
 
 
         //Need to only change one of the time properties at a time
         var stun = req.body.stun;
-        console.log('stun param :'+stun);
+        if (isNaN(stun)) {
+            stun = results.timeLineEvent.stun;
+        }
+
+        var time = req.body.time;
+        if (isNaN(time)) {
+            time = Number(results.timeLineEvent.time);
+        }
+        else {
+            time = Number(time);
+        }
+
+
+        var color = req.body.color;
+        if (!color) {
+            color = results.timeLineEvent.color;
+        }
+
+        var actionTime = req.body.actionTime;
+        if (!isNaN(actionTime)) {
+            time = Number(actionTime) +time;
+            sessionParam = {
+                lastEventId: results.timeLineEvent._id,
+                lastEventDate: Date()
+            };
+        }
+
+
+        var hidden = (req.body.hidden? true: false);
+
+
+        var actionParams = {
+            stun: stun,
+            time: time,
+            color: color,
+            hidden: hidden
+        };
+/*
+
+        console.log('stun value :'+stun);
+        console.log('actionParams :'+actionParams);
+*/
+
+        /*for (const property in actionParams) {
+            console.log(`${property}: ${actionParams[property]}`);
+        }*/
+        /*
 
 
         if(isNaN(stun)) {
@@ -205,6 +247,7 @@ exports.timeline_event_update = function(req, res, next) {
         else {
             actionParams = {stun: stun};
         }
+        */
         //console.log('actionParams :'+actionParams);
         if (sessionParam) {
             async.parallel({

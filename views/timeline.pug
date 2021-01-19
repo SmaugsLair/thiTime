@@ -28,33 +28,36 @@ block content
               td
                 input.name(disabled=true, value=item.name)
               td
-                input.stun(type='number', name='stun', min=0, max=99, value=item.stun, oninput="stunChange('"+index+"')"
-                  id='stun'+index)
+                input.stun(type='number', name='stun', min=0, max=99, value=item.stun, id='stun'+index)
               td
-                select.actionTime(name='actionTime', oninput="actionChange('"+index+"')", id='actionTime'+index)
+                select.actionTime(name='actionTime', id='actionTime'+index)
                   option(value=0) Choose action
                   each actionTime in actionTimes
                     - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
                     option(value=total) #{actionTime.name} (#{total})
               td
-                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden checked=item.hidden oninput="hiddenChange('"+index+"')")
+                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden checked=item.hidden)
               td
-                input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time,
-                  oninput="timeChange('"+index+"')")
+                input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time)
               td.lastEvent
                 input.reactTime(disabled=true, value=item.reactTime, type='number', min=-999, max=999)
               td
-                button(onclick="showOverlay('"+index+"'); return false;") Edit
+                button.image(onclick="showOverlay('"+index+"'); return false;")
+                  img.button(src="/images/delta.png" alt="Deltas")
               td
-                input.color(type='color', name='color', value=item.color, id='color'+index, oninput="colorChange('"+index+"')")
+                input.color(type='color', name='color', value=item.color, id='color'+index)
               td
-                button(type='submit', disabled=true, id='tlbtn'+index, formaction='/timeline/'+item._id+'/update') Update
+                button.image(type='submit', id='tlbtn'+index, formaction='/timeline/'+item._id+'/update')
+                  img.button(src="/images/update.png" alt="Update")
               td
-                button(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone') Clone
+                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone')
+                  img.button(src="/images/copy.png" alt="Copy")
               td
-                button(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete') Delete
+                button.image(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete')
+                  img.button(src="/images/delete.png" alt="Delete")
               td
-                button(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect') Collect
+                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect')
+                  img.button(src="/images/save.png" alt="Collect")
         else
           tr
             td Empty Timeline
@@ -75,18 +78,35 @@ block content
             td
               input.newEventTime(type='text', placeholder='Time', name='newEventTime', size=4, value=(undefined===newEvent ? '' : newEvent.time))
             td ...
-            td
+            td ...
             td ...
             td
               button(type='submit') Add
-            td
-            td
+            td ...
+            td ...
+            td ...
+
+        tr
+          form(method='POST' id='importEventForm' action='/timeline/'+gameSession._id+'/import')
             td
               if (collectedEvents)
-                select(name='importEvent', oninput='document.getElementById("newEventForm").submit()')
+                select(name='importEvent', oninput='document.getElementById("importEventForm").submit()')
                   option(value='unselected') Choose import
                     each eventItem in collectedEvents
                       option(value=eventItem._id) #{eventItem.name}
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+            td ...
+
+
 
   each item, index in timeline
     div.overlay(id='overlay'+index)

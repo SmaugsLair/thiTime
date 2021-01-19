@@ -36,6 +36,7 @@ router.post('/gamesession/:id/delete', requireLogin,gameSessionController.game_s
 
 router.get('/timeline/:gsid', requireLogin,timelineController.load)
 router.post('/timeline/:gsid/create', requireLogin,timelineController.timeline_event_create);
+router.post('/timeline/:gsid/import', requireLogin,timelineController.timeline_event_import);
 router.post('/timeline/:tid/update', requireLogin,timelineController.timeline_event_update);
 router.post('/timeline/:tid/:gsid/delete', requireLogin,timelineController.timeline_event_delete);
 router.post('/timeline/:tid/:gsid/clone', requireLogin,timelineController.timeline_event_clone);
@@ -47,6 +48,8 @@ router.get('/atds', atdController.atd_list);
 
 router.get('/playerSessions', playerController.playerSessions);
 router.get('/playerSession/:gmid/:gsid', playerController.playerSession);
+
+router.get('/lastEventDate/:gsid', playerController.lastEventDate);
 
 module.exports = router;
 
