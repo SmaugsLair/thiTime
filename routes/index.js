@@ -29,6 +29,11 @@ router.get('/gm', requireLogin,gmController.gm_detail);
 router.get('/gm/collection', requireLogin,gmController.gm_collection);
 router.post('/gm/:ceid/deleteEvent',requireLogin, gmController.collected_event_delete);
 
+router.get('/updateGM', requireLogin, gmController.update);
+router.post('/updateGM', requireLogin, gmController.applyUpdate);
+router.get('/updatePassword', requireLogin, gmController.updatePassword);
+router.post('/updatePassword', requireLogin, gmController.applyUpdatePassword);
+
 router.get('/gamesession/create', requireLogin,gameSessionController.game_session_create);
 router.post('/gamesession/create', requireLogin,gameSessionController.game_session_save);
 router.get('/gamesession/:id/delete', requireLogin,gameSessionController.game_session_delete);

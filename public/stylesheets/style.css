@@ -148,3 +148,11 @@ button.image {
 img.button {
   padding: 0px;
 }
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.error {
+  color: #a7060a;
+}

@@ -11,16 +11,13 @@ block content
         tr
           th Character/NPC/Event
           th Stun
-          th ...
+          th
           th Hidden
           th Time
           th React
           th Deltas
           th Color
-          th Update
-          th Clone
-          th Delete
-          th Collect
+          th
       tbody
         each item, index in timeline
           form(method='POST' id='updateEventForm')
@@ -46,17 +43,13 @@ block content
                   img.button(src="/images/delta.png" alt="Deltas")
               td
                 input.color(type='color', name='color', value=item.color, id='color'+index)
-              td
-                button.image(type='submit', id='tlbtn'+index, formaction='/timeline/'+item._id+'/update')
-                  img.button(src="/images/update.png" alt="Update")
-              td
-                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone')
-                  img.button(src="/images/copy.png" alt="Copy")
-              td
-                button.image(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete')
+              td.nowrap
+                button(type='submit', id='tlbtn'+index, formaction='/timeline/'+item._id+'/update') Update
+                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone', title='Duplicate')
+                  img.button(src="/images/copy.png" alt="Duplicate")
+                button.image(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete', title='Delete')
                   img.button(src="/images/delete.png" alt="Delete")
-              td
-                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect')
+                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect', title='Collect')
                   img.button(src="/images/save.png" alt="Collect")
         else
           tr
@@ -67,24 +60,26 @@ block content
             td ...
             td ...
             td ...
+            td ...
+            td ...
         tr
           form(method='POST' id='newEventForm' action='/timeline/'+gameSession._id+'/create',
                 onsubmit='return validateNewEvent()')
             td
-              input.newEventName(type='text', placeholder='New event', name='newEventName', value=(undefined===newEvent ? '' : newEvent.name))
+              input.newEventName(type='text', placeholder='New event', name='newEventName', value='')
+            td
+              input.stun(type='number', name='stun', min=0, max=99, value=0)
             td ...
+            td
+              input(type='checkbox', name='hidden', checked=true)
+            td
+              input.newEventTime(type='text', placeholder='Time', name='newEventTime', size=4, value='')
             td ...
             td ...
             td
-              input.newEventTime(type='text', placeholder='Time', name='newEventTime', size=4, value=(undefined===newEvent ? '' : newEvent.time))
-            td ...
-            td ...
-            td ...
+              input.color(type='color', name='color', value='#808080')
             td
               button(type='submit') Add
-            td ...
-            td ...
-            td ...
 
         tr
           form(method='POST' id='importEventForm' action='/timeline/'+gameSession._id+'/import')
@@ -102,10 +97,6 @@ block content
             td ...
             td ...
             td ...
-            td ...
-            td ...
-            td ...
-
 
 
   each item, index in timeline

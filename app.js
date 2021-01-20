@@ -48,7 +48,9 @@ else {
 
 //console.log('mongoDb:'+mongoDB);
 //Set up default mongoose connection
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB,
+    {useNewUrlParser: true,
+      useUnifiedTopology: true});
 
 //Get the default connection
 var db = mongoose.connection;

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  form(method='POST', action='/updateGM')
+    table
+      tr
+        td Username
+        td
+          input(type='text', name='username', placeholder='Login id', value=gameMaster.name)
+      tr
+        td Display Name
+        td
+          input(type='text', name='displayName', placeholder='Players see this', value=gameMaster.displayName)
+      tr
+        td Email
+        td
+          input(type='text', name='email', placeholder='email@provider.org', value=gameMaster.email)
+      tr
+        td
+        td
+          button(type='submit') Update
+    br
+    a(href='/updatePassword') Update Password

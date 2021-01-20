@@ -21,7 +21,9 @@ exports.playerSessions = function(req, res) {
 
         res.render('playerSessions', { title: 'Player Sessions',
             sessionList: results.sessionList,
-            gmList: results.gmList } );
+            gmList: results.gmList,
+            gameMaster: req.session.gameMaster,
+        } );
     });
 };
 
@@ -87,6 +89,7 @@ exports.playerSession = function(req, res) {
             timeline: results.timeline,
             gm: results.gameMaster,
             actionTimes: results.actionTimes,
+            gameMaster: req.session.gameMaster,
             refresh: 'refresh'
         } );
     });

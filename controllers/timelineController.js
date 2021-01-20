@@ -86,8 +86,9 @@ exports.timeline_event_create = function(req, res, next) {
             name: req.body.newEventName,
             gameSessionId: req.params.gsid,
             time: req.body.newEventTime,
-            color: '#808080',
-            hidden: true
+            color: req.body.color,
+            stun: req.body.stun,
+            hidden: req.body.hidden
         });
 
     timeLineEvent.save(function (err) {
@@ -188,67 +189,6 @@ exports.timeline_event_update = function(req, res, next) {
             color: color,
             hidden: hidden
         };
-/*
-
-        console.log('stun value :'+stun);
-        console.log('actionParams :'+actionParams);
-*/
-
-        /*for (const property in actionParams) {
-            console.log(`${property}: ${actionParams[property]}`);
-        }*/
-        /*
-
-
-        if(isNaN(stun)) {
-            // stun wasn't passed, try others
-            var actionTime = req.body.actionTime;
-            console.log('actionTime param:'+actionTime);
-
-            if (isNaN(actionTime)) {
-                //actionTime not passed, must be time
-                var time = req.body.time;
-                if (isNaN(time)) {
-                    var color = req.body.color;
-                    if (color) {
-                        console.log('color param :'+color);
-                        actionParams = {color: color};
-                    }
-                    else {
-                        var hidden = req.body.hidden;
-                        //because hidden is a checkbox it is only sent if checked
-                        //so this should be the last param to check in this chain
-                        //untill i figure out how to  update more than one model value at once
-                        if (hidden) {
-                            console.log('hidden param:'+hidden);
-                            actionParams = {hidden: true};
-                        }
-                        else {
-                            console.log('no hidden param, must be false');
-                            actionParams = {hidden: false};
-                        }
-
-                    }
-                }
-                else {
-                    console.log('time param:' + time);
-                    actionParams = {time: time};
-                }
-
-            }
-            else {
-                actionTime = Number(actionTime) + Number(results.timeLineEvent.time);
-                console.log('new actionTime:' + actionTime);
-                actionParams = {time: actionTime};
-                sessionParam = {lastEventId: results.timeLineEvent._id};
-            }
-
-        }
-        else {
-            actionParams = {stun: stun};
-        }
-        */
-        //console.log('actionParams :'+actionParams);
         if (sessionParam) {
             async.parallel({
                 gameSessionUpdate: function(callback) {
