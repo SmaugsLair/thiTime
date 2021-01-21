@@ -175,6 +175,8 @@ table.timeline button {
   min-height: 20px;
   max-height: 20px;
   vertical-align: middle;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 table input:disabled {
