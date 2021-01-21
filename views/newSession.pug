@@ -3,10 +3,10 @@ extends layout
 block content
     strong New session for #{gameMaster.name}
 
-    form(id='newSessionForm' method='POST' action='', onsubmit='return validateNewSession();')
+    form(id='newSessionForm' method='POST' action='')
         div
             label(for='sessionName') Session:
-            input.sessionName(type='text', name='sessionName' value=(undefined===session ? '' : session.name))
+            input.sessionName(type='text', name='sessionName' value=(undefined===session ? '' : session.name), required=true)
             button(type='submit') Submit
             a(href='/gm') Cancel
         if errors

@@ -146,11 +146,13 @@ exports.timeline_event_update = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        //var actionParams = [];
-        var sessionParam; //To update the session with the last event if an action was fired
+        var sessionParam;
 
+        var name = req.body.name;
+        if (!name) {
+            name = results.timeLineEvent.name;
+        }
 
-        //Need to only change one of the time properties at a time
         var stun = req.body.stun;
         if (isNaN(stun)) {
             stun = results.timeLineEvent.stun;
@@ -171,7 +173,7 @@ exports.timeline_event_update = function(req, res, next) {
         }
 
         var actionTime = req.body.actionTime;
-        if (!isNaN(actionTime)) {
+        if (!isNaN(actionTime) && actionTime > 0) {
             time = Number(actionTime) +time;
             sessionParam = {
                 lastEventId: results.timeLineEvent._id,
@@ -184,6 +186,7 @@ exports.timeline_event_update = function(req, res, next) {
 
 
         var actionParams = {
+            name: name,
             stun: stun,
             time: time,
             color: color,
@@ -207,7 +210,6 @@ exports.timeline_event_update = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
-                //res.redirect('/timeline/' + results.timeLineEvent.gameSessionId);
             });
 
         }

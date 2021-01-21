@@ -45,34 +45,6 @@ function populateAtdTable() {
     });
 };
 
-function validateNewSession() {
-    var sessionName = document.forms["newSessionForm"]["sessionName"].value;
-    if (sessionName == "") {
-        alert("Please provide a session name");
-        return false;
-    }
-    else return true;
-};
-
-
-function validateNewEvent() {
-    var eventName = document.forms["newEventForm"]["newEventName"].value;
-    var eventTime = document.forms["newEventForm"]["newEventTime"].value;
-    if (eventName == "") {
-        alert("Please provide an event name");
-        return false;
-    }
-    if (eventTime == "") {
-        alert("Please provide an event time");
-        return false;
-    }
-    if (isNaN(eventTime)) {
-        alert("Event Time must be a number");
-        return false;
-    }
-    else return true;
-};
-
 function stunChange(id) {
     document.getElementById('tlbtn'+id).disabled = false;
     //document.getElementById('stun'+id).disabled = true;

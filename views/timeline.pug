@@ -6,16 +6,18 @@ block content
     label(for='gmName') GameMaster:
     a(href='/gm') #{gameMaster.name}
   #timelineTable
-    table
+    table.timeline
       thead
         tr
           th Character/NPC/Event
           th Stun
           th
-          th Hidden
+          th
+            img(src="/images/hidden.png" alt="Hidden")
           th Time
           th React
-          th Deltas
+          th
+            img(src="/images/delta.png" alt="Deltas")
           th Color
           th
       tbody
@@ -23,9 +25,9 @@ block content
           form(method='POST' id='updateEventForm')
             tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
               td
-                input.name(disabled=true, value=item.name)
+                input.name(value=item.name, name='name', id='name'+index, required=true)
               td
-                input.stun(type='number', name='stun', min=0, max=99, value=item.stun, id='stun'+index)
+                input.stun(type='number', name='stun', min=0, max=99, value=item.stun, id='stun'+index, required=true)
               td
                 select.actionTime(name='actionTime', id='actionTime'+index)
                   option(value=0) Choose action
@@ -33,13 +35,13 @@ block content
                     - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
                     option(value=total) #{actionTime.name} (#{total})
               td
-                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden checked=item.hidden)
+                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden, checked=item.hidden)
               td
-                input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time)
+                input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time, required=true)
               td.lastEvent
                 input.reactTime(disabled=true, value=item.reactTime, type='number', min=-999, max=999)
               td
-                button.image(onclick="showOverlay('"+index+"'); return false;")
+                button.image(onclick="showOverlay('"+index+"'); return false;", title='Deltas')
                   img.button(src="/images/delta.png" alt="Deltas")
               td
                 input.color(type='color', name='color', value=item.color, id='color'+index)
@@ -63,17 +65,16 @@ block content
             td ...
             td ...
         tr
-          form(method='POST' id='newEventForm' action='/timeline/'+gameSession._id+'/create',
-                onsubmit='return validateNewEvent()')
+          form(method='POST' id='newEventForm' action='/timeline/'+gameSession._id+'/create' )
             td
-              input.newEventName(type='text', placeholder='New event', name='newEventName', value='')
+              input.newEventName(type='text', placeholder='New event', name='newEventName', value='', required=true)
             td
-              input.stun(type='number', name='stun', min=0, max=99, value=0)
+              input.stun(type='number', name='stun', min=0, max=99, value=0, required=true)
             td ...
             td
               input(type='checkbox', name='hidden', checked=true)
             td
-              input.newEventTime(type='text', placeholder='Time', name='newEventTime', size=4, value='')
+              input.newEventTime(type='number', placeholder='Time', name='newEventTime', min=-999, max=999, value='', required=true)
             td ...
             td ...
             td
