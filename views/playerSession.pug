@@ -29,11 +29,11 @@ block content
               td.number #{item.stun}
               td
                 select.actionTime(name='actionTime', id='actionTime' + index)
-                  option(value=0) Action (*Reaction)
+                  option(value=0) Action (TU) *=Reaction
                   each actionTime in actionTimes
                     - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
                     - var reaction = (total < item.reactTime ? '*' : '')
-                    option(value=total) #{actionTime.name} (#{total}#{reaction})
+                    option(value=total) #{actionTime.name} (#{total}) #{reaction}
               td.number #{item.time}
               td.lastEvent #{item.reactTime}
         else

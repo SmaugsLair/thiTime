@@ -18,4 +18,29 @@ var TimeLineEventSchema = new Schema({
     //eventType: enum //player, npc, gm
 });
 
+
+TimeLineEventSchema
+    .virtual('deltaCount')
+    .get(function () {
+        var count = 0;
+        this.deltas.forEach((delta, key) => {
+            if (delta != 0) {
+                count += 1;
+            }
+        })
+        return count;
+    });
+
+TimeLineEventSchema
+    .virtual('deltaString')
+    .get(function () {
+        var value = 'Adjust Deltas'
+        this.deltas.forEach((delta, key) => {
+            if (delta != 0) {
+                value += '\n'+key+':'+delta;
+            }
+        })
+        return value;
+    });
+
 module.exports = mongoose.model('TimeLineEventModel', TimeLineEventSchema );

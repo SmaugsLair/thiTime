@@ -179,6 +179,13 @@ table.timeline button {
   margin-right: 1px;
 }
 
+table.timeline button:hover {
+  background-color:rgba(255,255,255,0.8);
+}
+table.timeline button.deltas {
+  width: 20px;
+}
+
 table input:disabled {
   color: black;
 }

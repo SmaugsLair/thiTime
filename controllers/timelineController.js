@@ -88,7 +88,7 @@ exports.timeline_event_create = function(req, res, next) {
             time: req.body.newEventTime,
             color: req.body.color,
             stun: req.body.stun,
-            hidden: req.body.hidden
+            hidden: (req.body.hidden? true : false)
         });
 
     timeLineEvent.save(function (err) {
