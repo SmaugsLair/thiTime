@@ -26,16 +26,19 @@ block content
             tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
               td
                 input(disabled=true, value=item.name)
-              td.number #{item.stun}
+              td.number
+                input(disabled=true, value=item.stun, size=2)
               td
-                select.actionTime(name='actionTime', id='actionTime' + index)
-                  option(value=0) Action (TU) *=Reaction
-                  each actionTime in actionTimes
-                    - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
-                    - var reaction = (total < item.reactTime ? '*' : '')
-                    option(value=total) #{actionTime.name} (#{total}) #{reaction}
-              td.number #{item.time}
-              td.lastEvent #{item.reactTime}
+                - var titleString = 'Action (TU) *=Can react\n__________________\n'
+                each actionTime in actionTimes
+                  - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                  - var reaction = (total < item.reactTime ? '*' : '')
+                  - titleString += '\n' + actionTime.name + ' ('+ total +') ' +  reaction
+                input(disabled=true, value='...', title=titleString, size=3)
+              td.number
+                input(disabled=true, value=item.time, size=3)
+              td.lastEvent
+                input(disabled=true, value=item.reactTime, size=3)
         else
           tr
             td Empty Timeline

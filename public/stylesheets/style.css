@@ -124,17 +124,27 @@ tr.lastEvent td {
   border-bottom: 3px solid white;
   border-top: 3px solid white;
 }
-
+/*
 table.playerView {
   width: auto;
 }
 table.playerView th {
   width: 1%;
   white-space: nowrap;
-}
+}*/
 table.playerView td.number,table.playerView td.lastEvent {
-  background-color:rgba(255,255,255,0.6);
   text-align: center;
+}
+
+table.playerView input {
+  background-color:rgba(255,255,255,0.6);
+  border-width: 0px;
+  padding: 2px;
+  margin: 2px;
+}
+
+tr.lastEvent td.lastEvent input {
+  border-width: 1px;
 }
 
 tr.lastEvent td.lastEvent {
@@ -188,4 +198,11 @@ table.timeline button.deltas {
 
 table input:disabled {
   color: black;
+}
+
+tr.newEvent input {
+  border-width: 1px;
+}
+tr.newEvent button {
+  border-width: 1px;
 }
