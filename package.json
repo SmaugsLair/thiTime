@@ -18,5 +18,19 @@
     "monk": "^7.3.2",
     "morgan": "^1.9.1",
     "pug": "^3.0.0"
-  }
+  },
+  "description": "THI Time Tracker",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmaugsLair/thiTime.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmaugsLair/thiTime/issues"
+  },
+  "homepage": "https://github.com/SmaugsLair/thiTime#readme"
 }

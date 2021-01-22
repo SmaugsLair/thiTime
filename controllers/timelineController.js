@@ -129,9 +129,6 @@ exports.timeline_event_import = function(req, res, next) {
 
 exports.timeline_event_update = function(req, res, next) {
 
-
-    //var gameMaster = req.session.gameMaster;
-
     async.parallel({
         timeLineEvent: function(callback) {
             TimeLineEvent.findById(req.params.tid)
@@ -146,7 +143,9 @@ exports.timeline_event_update = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        var sessionParam;
+        var sessionParam = {
+            lastEventDate: Date()
+        };
 
         var name = req.body.name;
         if (!name) {
@@ -192,34 +191,24 @@ exports.timeline_event_update = function(req, res, next) {
             color: color,
             hidden: hidden
         };
-        if (sessionParam) {
-            async.parallel({
-                gameSessionUpdate: function(callback) {
-                    if (sessionParam) {
-                        GameSession.findByIdAndUpdate(results.timeLineEvent.gameSessionId, sessionParam, {})
-                            .exec(callback);
-                    }
-                },
-                timelineUpdate: function(callback) {
-                    if (actionParams) {
-                        TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {})
-                            .exec(callback);
-                    }
+        async.parallel({
+            gameSessionUpdate: function(callback) {
+                if (sessionParam) {
+                    GameSession.findByIdAndUpdate(results.timeLineEvent.gameSessionId, sessionParam, {})
+                        .exec(callback);
                 }
-            }, function(err, updates) {
-                if (err) {
-                    return next(err);
+            },
+            timelineUpdate: function(callback) {
+                if (actionParams) {
+                    TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {})
+                        .exec(callback);
                 }
-            });
-
-        }
-        else if (actionParams) {
-            TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {}, function (err) {
-                if (err) {
-                    return next(err);
-                }
-            });
-        }
+            }
+        }, function(err, updates) {
+            if (err) {
+                return next(err);
+            }
+        });
         res.redirect('/timeline/'+results.timeLineEvent.gameSessionId);
 
     });

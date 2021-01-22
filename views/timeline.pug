@@ -42,7 +42,7 @@ block content
                 - var titleString = ''
                 each actionTime in actionTimes
                   - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
-                  - if (total < item.reactTime) { titleString += '\n' + actionTime.name + ' ' + total}
+                  - if (total <= item.reactTime) { titleString += '\n' + actionTime.name + ' ' + total}
                 //- for (var actionTime in actionTimes) { var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0); if (total < item.reactTime) { titleString += '\n' + actionTime.name + ' ' + total}}
                 input.reactTime(disabled=true, value=item.reactTime, type='number', min=-999, max=999, title=titleString)
               td
