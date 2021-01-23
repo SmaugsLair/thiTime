@@ -29,10 +29,10 @@ block content
               td.number
                 input(disabled=true, value=item.stun, size=2)
               td
-                - var titleString = 'Action (TU) *=Can react\n__________________\n'
+                - let titleString = 'Action (TU) *=Can react\n__________________\n'
                 each actionTime in actionTimes
-                  - var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
-                  - var reaction = (total <= item.reactTime ? '*' : '')
+                  - let total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                  - let reaction = (total <= item.reactTime ? '*' : '')
                   - titleString += '\n' + actionTime.name + ' ('+ total +') ' +  reaction
                 input(disabled=true, value='...', title=titleString, size=3)
               td.number

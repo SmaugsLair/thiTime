@@ -1,10 +1,10 @@
 //Require Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Define a schema
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var ActionTimeDefaultSchema = new Schema({
+let ActionTimeDefaultSchema = new Schema({
     name: {type: String, required: true},
     time: {type: Number, required: true}
 });

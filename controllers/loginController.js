@@ -1,9 +1,4 @@
-var GameMaster = require('../models/gamemaster');
-var async = require('async');
-var GameSession = require('../models/gamesession');
-var CollectedEvent = require('../models/collectedevent');
-var ActionTimeDefault = require('../models/atd');
-
+const GameMaster = require('../models/gamemaster');
 
 exports.index = function(req, res) {
     res.render('login');

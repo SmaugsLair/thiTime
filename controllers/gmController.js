@@ -1,8 +1,8 @@
-var GameMaster = require('../models/gamemaster');
-var async = require('async');
-var GameSession = require('../models/gamesession');
-var CollectedEvent = require('../models/collectedevent');
-var ActionTimeDefault = require('../models/atd');
+const GameMaster = require('../models/gamemaster');
+const async = require('async');
+const GameSession = require('../models/gamesession');
+const CollectedEvent = require('../models/collectedevent');
+const ActionTimeDefault = require('../models/atd');
 
 
 exports.index = function(req, res) {
@@ -21,9 +21,8 @@ exports.gm_list = function(req, res) {
 };
 
 exports.gm_detail = function(req, res, next) {
-    console.log('gm_detail');
 
-    var gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.gameMaster;
 
     console.log('gameMaster:'+gameMaster.name);
 
@@ -46,7 +45,7 @@ exports.gm_detail = function(req, res, next) {
 exports.gm_collection = function(req, res, next) {
     console.log('gm_collection');
 
-    var gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.gameMaster;
     async.parallel({
         actionTimes: function(callback) {
             ActionTimeDefault.find({}, 'name time')
@@ -77,7 +76,7 @@ exports.collected_event_delete = function(req, res, next) {
 };
 
 exports.update = function (req, res, next) {
-    var gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.gameMaster;
     res.render('gm_update',
         { title: 'Game Master Update',
             gameMaster: gameMaster}
@@ -86,8 +85,8 @@ exports.update = function (req, res, next) {
 
 exports.applyUpdate = function (req, res, next) {
 
-    var gameMaster = req.session.gameMaster;
-    var params = {
+    const gameMaster = req.session.gameMaster;
+    const params = {
         name: req.body.username,
         displayName: req.body.displayName,
         email: req.body.email
@@ -102,7 +101,7 @@ exports.applyUpdate = function (req, res, next) {
 }
 
 exports.updatePassword = function (req, res, next) {
-    var gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.gameMaster;
     res.render('password_update',
         { title: 'Password Update',
             gameMaster: gameMaster}
@@ -110,17 +109,17 @@ exports.updatePassword = function (req, res, next) {
 }
 
 exports.applyUpdatePassword = function (req, res, next) {
-    var gameMaster = req.session.gameMaster;
-    var password = req.body.password1;
-    var confirm = req.body.password2;
-    var error;
+    const gameMaster = req.session.gameMaster;
+    const password = req.body.password1;
+    const confirm = req.body.password2;
+    let error;
     if (password) {
         if (password === confirm) {
-            var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+            const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
             if (password.match(regex)) {
-                var temp = new GameMaster()
+                let temp = new GameMaster();
                 temp.setPassword(password);
-                var params = {
+                const params = {
                     hash: temp.hash,
                     salt: temp.salt
                 };

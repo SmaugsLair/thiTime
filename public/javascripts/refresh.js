@@ -1,7 +1,7 @@
 let pageDate = document.getElementById("lastEventDate").value;
 let gameSessionID = document.getElementById("gameSessionID").value;
 
-var x = setInterval(function() {
+let x = setInterval(function() {
     checkForNewEvent();
 }, 2000);
 
@@ -15,7 +15,7 @@ async function checkForNewEvent() {
     if (data.lastEventDate > pageDate) {
         location.reload();
     }
-};
+}
 
 
 

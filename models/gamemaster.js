@@ -1,11 +1,11 @@
 //Require Mongoose
-var mongoose = require('mongoose');
-var crypto = require('crypto');
+const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 //Define a schema
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var GameMasterSchema = new Schema({
+let GameMasterSchema = new Schema({
     name: {type: String, required: true, unique:true},
     password: {type: String, required: false},
     displayName: {type: String, required: false},
@@ -26,7 +26,7 @@ GameMasterSchema.methods.setPassword = function(password) {
 
 GameMasterSchema.methods.validPassword = function(password) {
     if (this.salt) {
-        var hash = crypto.pbkdf2Sync(password,
+        let hash = crypto.pbkdf2Sync(password,
             this.salt, 1000, 64, `sha512`).toString(`hex`);
         return hash === this.hash;
     }

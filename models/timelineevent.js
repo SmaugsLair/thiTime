@@ -1,10 +1,10 @@
 //Require Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Define a schema
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var TimeLineEventSchema = new Schema({
+let TimeLineEventSchema = new Schema({
     name: {type: String, required: true},
     gameSessionId: {type: Schema.Types.ObjectId, ref: 'GameSession', required: true},
     time: {type: Number, required: true},
@@ -22,7 +22,7 @@ var TimeLineEventSchema = new Schema({
 TimeLineEventSchema
     .virtual('deltaCount')
     .get(function () {
-        var count = 0;
+        let count = 0;
         this.deltas.forEach((delta, key) => {
             if (delta != 0) {
                 count += 1;
@@ -34,7 +34,7 @@ TimeLineEventSchema
 TimeLineEventSchema
     .virtual('deltaString')
     .get(function () {
-        var value = 'Adjust Deltas'
+        let value = 'Adjust Deltas'
         this.deltas.forEach((delta, key) => {
             if (delta != 0) {
                 value += '\n'+key+':'+delta;

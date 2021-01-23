@@ -1,22 +1,21 @@
-var express = require('express');
-var router = express.Router();
-var atdController = require('../controllers/atdController');
-var gmController = require('../controllers/gmController');
-var gameSessionController = require('../controllers/gameSessionController');
-var timelineController = require('../controllers/timelineController');
-var loginController = require('../controllers/loginController');
-var playerController = require('../controllers/playerController');
+const express = require('express');
+const router = express.Router();
+const atdController = require('../controllers/atdController');
+const gmController = require('../controllers/gmController');
+const gameSessionController = require('../controllers/gameSessionController');
+const timelineController = require('../controllers/timelineController');
+const loginController = require('../controllers/loginController');
+const playerController = require('../controllers/playerController');
 
 function requireLogin (req, res, next) {
-  console.log('requireLogin');
-  var gameMaster = req.session.gameMaster;
+  let gameMaster = req.session.gameMaster;
   if (!gameMaster) {
     res.redirect('/login');
-  } else {
-    console.log('gameMaster:'+gameMaster.name);
+  }
+  else {
     next();
   }
-};
+}
 
 router.get('/', gmController.index);
 

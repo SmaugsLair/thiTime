@@ -1,8 +1,6 @@
-var async = require('async');
-const { body,validationResult } = require("express-validator");
-var GameSession = require('../models/gamesession');
-var TimeLineEvent = require('../models/timelineevent');
-var GameMaster = require('../models/gamemaster');
+const async = require('async');
+const GameSession = require('../models/gamesession');
+const TimeLineEvent = require('../models/timelineevent');
 
 // Start new session
 exports.game_session_create = function(req, res) {
@@ -11,7 +9,7 @@ exports.game_session_create = function(req, res) {
 
 exports.game_session_save = function(req, res, next) {
 
-    var session = new GameSession(
+    const session = new GameSession(
         {name: req.body.sessionName, gameMasterId: req.session.gameMaster._id}
     );
 

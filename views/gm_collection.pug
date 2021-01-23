@@ -11,8 +11,8 @@ block content
             td #{item.name}
             td
               each actionTime in actionTimes
-                - var value = item.deltas.get(actionTime.name)
-                - var show = (value != 0)
+                - let value = item.deltas.get(actionTime.name)
+                - let show = (value != 0)
                 if show
                   output #{actionTime.name}: #{value} &nbsp;
             td(style="background-color:"+item.color) &nbsp;&nbsp;&nbsp;

@@ -1,4 +1,4 @@
-var ActionTimeDefault = require('../models/atd');
+const ActionTimeDefault = require('../models/atd');
 
 // Display list of all atds
 exports.atd_list = function(req, res) {

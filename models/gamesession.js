@@ -1,11 +1,11 @@
 //Require Mongoose
-var mongoose = require('mongoose');
-var TimeLineEvent = require('../models/timelineevent');
+const mongoose = require('mongoose');
+const TimeLineEvent = require('../models/timelineevent');
 
 //Define a schema
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var GameSessionSchema = new Schema({
+let GameSessionSchema = new Schema({
     name: {type: String, required: true},
     gameMasterId : {type: Schema.Types.ObjectId, ref: 'GameMaster', required: true},
     lastEventId: {type: Schema.Types.ObjectId, ref: 'TimelineEvent', required: false},

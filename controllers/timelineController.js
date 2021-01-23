@@ -1,12 +1,10 @@
-var async = require('async');
-const { body,validationResult } = require("express-validator");
+const async = require('async');
 
-var mongoose = require('mongoose');
-var GameSession = require('../models/gamesession');
-var TimeLineEvent = require('../models/timelineevent');
-var GameMaster = require('../models/gamemaster');
-var ActionTimeDefault = require('../models/atd');
-var CollectedEvent = require('../models/collectedevent');
+const mongoose = require('mongoose');
+const GameSession = require('../models/gamesession');
+const TimeLineEvent = require('../models/timelineevent');
+const ActionTimeDefault = require('../models/atd');
+const CollectedEvent = require('../models/collectedevent');
 
 
 
@@ -14,15 +12,16 @@ var CollectedEvent = require('../models/collectedevent');
 // Display timeline for one session
 exports.load = function(req, res, next) {
 
-    var gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.gameMaster;
+    const gsid = req.params.gsid;
 
     async.parallel({
         gameSession: function(callback) {
-            GameSession.findById(req.params.gsid)
+            GameSession.findById(gsid)
                 .exec(callback)
         },
         timeline: function(callback) {
-            TimeLineEvent.find({ 'gameSessionId': req.params.gsid })
+            TimeLineEvent.find({ 'gameSessionId': gsid })
                 //.populate('deltas')
                 .sort('time')
                 .exec(callback)
@@ -40,27 +39,26 @@ exports.load = function(req, res, next) {
             return next(err);
         }
         if (results.gameSession==null) { // No results.
-            var err = new Error('GameSession not found');
-            err.status = 404;
-            return next(err);
+            const error = new Error('GameSession not found');
+            error.status = 404;
+            return next(error);
         }
         // Successful, so render.
-        var lastEventId = results.gameSession.lastEventId;
+        const lastEventId = results.gameSession.lastEventId;
         if (lastEventId) {
-            var lastEventTime;
-            for (var item of results.timeline) {
+            let lastEventTime;
+            for (let item of results.timeline) {
                 if (lastEventId.equals(item._id)) {
-                    console.log('last event was for:'+item.name);
                     lastEventTime = item.time;
                     item.lastEvent = true;
                 }
             }
-            for (var item of results.timeline) {
-                item.reactTime = lastEventTime - item.time;
+            for (let event of results.timeline) {
+                event.reactTime = lastEventTime - event.time;
             }
         }
         else {
-            for (var item of results.timeline) {
+            for (let item of results.timeline) {
                 item.reactTime = 0;
             }
         }
@@ -81,7 +79,7 @@ exports.load = function(req, res, next) {
 };
 
 exports.timeline_event_create = function(req, res, next) {
-    var timeLineEvent = new TimeLineEvent(
+    const timeLineEvent = new TimeLineEvent(
         {
             name: req.body.newEventName,
             gameSessionId: req.params.gsid,
@@ -103,12 +101,11 @@ exports.timeline_event_create = function(req, res, next) {
 
 exports.timeline_event_import = function(req, res, next) {
 
-    var importEventID = req.body.importEvent;
-    console.log('importEventID:'+importEventID);
+    const importEventID = req.body.importEvent;
     CollectedEvent.findById(importEventID)
         .exec(function (err, collectedEvent) {
             if (err) { return next(err); }
-            var timeLineEvent = new TimeLineEvent(
+            const timeLineEvent = new TimeLineEvent(
                 {
                     name: collectedEvent.name,
                     gameSessionId: req.params.gsid,
@@ -139,25 +136,25 @@ exports.timeline_event_update = function(req, res, next) {
             return next(err);
         }
         if (results.timeLineEvent == null) { // No results.
-            var err = new Error('GameSession not found');
+            let err = new Error('GameSession not found');
             err.status = 404;
             return next(err);
         }
-        var sessionParam = {
+        let sessionParam = {
             lastEventDate: Date()
         };
 
-        var name = req.body.name;
+        let name = req.body.name;
         if (!name) {
             name = results.timeLineEvent.name;
         }
 
-        var stun = req.body.stun;
+        let stun = req.body.stun;
         if (isNaN(stun)) {
             stun = results.timeLineEvent.stun;
         }
 
-        var time = req.body.time;
+        let time = req.body.time;
         if (isNaN(time)) {
             time = Number(results.timeLineEvent.time);
         }
@@ -166,12 +163,12 @@ exports.timeline_event_update = function(req, res, next) {
         }
 
 
-        var color = req.body.color;
+        let color = req.body.color;
         if (!color) {
             color = results.timeLineEvent.color;
         }
 
-        var actionTime = req.body.actionTime;
+        let actionTime = req.body.actionTime;
         if (!isNaN(actionTime) && actionTime > 0) {
             time = Number(actionTime) +time;
             sessionParam = {
@@ -181,10 +178,10 @@ exports.timeline_event_update = function(req, res, next) {
         }
 
 
-        var hidden = (req.body.hidden? true: false);
+        const hidden = (req.body.hidden? true: false);
 
 
-        var actionParams = {
+        let actionParams = {
             name: name,
             stun: stun,
             time: time,
@@ -245,7 +242,7 @@ exports.timeline_event_clone = function(req, res, next) {
 exports.timeline_event_collect = function(req, res, next) {
     TimeLineEvent.findById(req.params.tid).exec(
         function(err, doc) {
-            var collectedEvent = new CollectedEvent(
+            const collectedEvent = new CollectedEvent(
                 { name: doc.name,
                     gameMasterId: req.session.gameMaster._id,
                     color: doc.color,
@@ -280,23 +277,21 @@ exports.timeline_event_updateDeltas = function(req, res, next) {
             return next(err);
         }
         if (results.timeLineEvent == null) { // No results.
-            var err = new Error('timeLineEvent not found');
+            let err = new Error('timeLineEvent not found');
             err.status = 404;
             return next(err);
         }
-        var temp = new TimeLineEvent();
+        let temp = new TimeLineEvent();
 
-        for (var item of results.actionTimes) {
+        for (let item of results.actionTimes) {
             console.log('item.name:'+item.name);
             console.log('req.body[item.name]:'+req.body[item.name]);
 
             temp.deltas.set(item.name, req.body[item.name]);
         }
-        //console.log('temp.deltas:'+temp.deltas);
 
-        var actionParams = {deltas: temp.deltas};
+        let actionParams = {deltas: temp.deltas};
 
-        console.log(actionParams);
         TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {}, function (err) {
             if (err) {
                 return next(err);

@@ -1,8 +1,8 @@
-var GameMaster = require('../models/gamemaster');
-var async = require('async');
-var GameSession = require('../models/gamesession');
-var TimeLineEvent = require('../models/timelineevent');
-var ActionTimeDefault = require('../models/atd');
+const GameMaster = require('../models/gamemaster');
+const async = require('async');
+const GameSession = require('../models/gamesession');
+const TimeLineEvent = require('../models/timelineevent');
+const ActionTimeDefault = require('../models/atd');
 
 exports.playerSessions = function(req, res) {
 
@@ -29,9 +29,6 @@ exports.playerSessions = function(req, res) {
 
 
 exports.playerSession = function(req, res) {
-
-    console.log('playerSession');
-
     async.parallel({
         gameMaster: function(callback) {
             GameMaster.findById(req.params.gmid)
@@ -56,28 +53,28 @@ exports.playerSession = function(req, res) {
             return next(err);
         }
         if (results.gameSession==null) { // No results.
-            var err = new Error('GameSession not found');
+            let err = new Error('GameSession not found');
             err.status = 404;
             return next(err);
         }
         // Successful, so render.
 
-        var lastEventId = results.gameSession.lastEventId;
+        const lastEventId = results.gameSession.lastEventId;
         if (lastEventId) {
-            var lastEventTime;
-            for (var item of results.timeline) {
+            let lastEventTime;
+            for (let item of results.timeline) {
                 if (lastEventId.equals(item._id)) {
                     console.log('last event was for:'+item.name);
                     lastEventTime = item.time;
                     item.lastEvent = true;
                 }
             }
-            for (var item of results.timeline) {
+            for (let item of results.timeline) {
                 item.reactTime = lastEventTime - item.time;
             }
         }
         else {
-            for (var item of results.timeline) {
+            for (let item of results.timeline) {
                 item.reactTime = 0;
             }
         }
@@ -102,12 +99,12 @@ exports.lastEventDate = function(req, res) {
             return next(err);
         }
         if (gameSession==null) { // No results.
-            var err = new Error('GameSession not found');
+            let err = new Error('GameSession not found');
             err.status = 404;
             return next(err);
         }
         else {
-            var time = gameSession.lastEventDate ? gameSession.lastEventDate.getTime() : 0;
+            const time = gameSession.lastEventDate ? gameSession.lastEventDate.getTime() : 0;
             res.json({lastEventDate: time });
         }
     });

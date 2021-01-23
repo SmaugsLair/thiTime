@@ -1,10 +1,10 @@
 //Require Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Define a schema
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var CollectedEventSchema = new Schema({
+let CollectedEventSchema = new Schema({
     name: {type: String, required: true},
     gameMasterId: {type: Schema.Types.ObjectId, ref: 'GameMaster', required: true},
     color: {type: String},
