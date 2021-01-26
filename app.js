@@ -75,8 +75,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const socketServer = new WebSocket.Server({port: 3030});
-socketServer.on('connection', (socketClient) => {
+const server = require('http').createServer();
+const WebSocketServer = require('ws').Server;
+
+const wss = new WebSocketServer({server: server}, function(){});
+
+server.listen(3030);
+
+
+//const socketServer = new WebSocket.Server({port: 3000});
+wss.on('connection', (socketClient) => {
   //console.log('connected');
   //console.log('client Set length: ', socketServer.clients.size);
   //socketClient.on('close', (socketClient) => {
@@ -89,7 +97,7 @@ socketServer.on('connection', (socketClient) => {
     //console.log('socketClient, on message:'+message);
     //const jsoned = JSON.stringify([message]);
     //console.log('jsoned:'+jsoned);
-    socketServer.clients.forEach((client) => {
+    wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(message);
       }
