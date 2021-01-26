@@ -5,6 +5,7 @@ block content
     div Session: #{gameSession.name}
     label(for='gmName') GameMaster:
     a#gmName(href='/gm') #{gameMaster.name}
+    input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
     table.timeline
       thead
@@ -50,10 +51,10 @@ block content
               td
                 input.color(type='color', name='color', value=item.color, id='color'+index)
               td.nowrap
-                button(type='submit', id='tlbtn'+index, formaction='/timeline/'+item._id+'/update') Update
-                button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone', title='Duplicate')
+                button(type='submit', onclick="announceUpdate(); return true;", id='tlbtn'+index, formaction='/timeline/'+item._id+'/update') Update
+                button.image(type='submit', onclick="announceUpdate(); return true;", id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/clone', title='Duplicate')
                   img.button(src="/images/copy.png" alt="Duplicate")
-                button.image(type='submit', id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete', title='Delete')
+                button.image(type='submit', onclick="announceUpdate(); return true;", id='delete'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/delete', title='Delete')
                   img.button(src="/images/delete.png" alt="Delete")
                 button.image(type='submit', id='clone'+index, formaction='/timeline/'+item._id+'/'+gameSession._id+'/collect', title='Collect')
                   img.button(src="/images/save.png" alt="Collect")
@@ -84,7 +85,7 @@ block content
             td
               input.color(type='color', name='color', value='#808080')
             td
-              button(type='submit') Add
+              button(type='submit', onclick="announceUpdate(); return true;") Add
 
         tr
           form(method='POST' id='importEventForm' action='/timeline/'+gameSession._id+'/import')

@@ -1,21 +1,13 @@
-let pageDate = document.getElementById("lastEventDate").value;
-let gameSessionID = document.getElementById("gameSessionID").value;
+const gsid = document.getElementById("gameSessionID").value;
 
-let x = setInterval(function() {
-    checkForNewEvent();
-}, 2000);
+const ws = new WebSocket('ws://'+location.hostname+':3030');
 
-//getText();
-
-//checkForNewEvent();
-
-async function checkForNewEvent() {
-    let response = await fetch('/lastEventDate/'+gameSessionID);
-    let data = await response.json();
-    if (data.lastEventDate > pageDate) {
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.gameSessionId===gsid) {
         location.reload();
     }
-}
+};
 
 
 

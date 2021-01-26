@@ -78,21 +78,22 @@ exports.playerSession = function(req, res) {
                 item.reactTime = 0;
             }
         }
-        if (!results.gameSession.lastEventDate) {
+        /*if (!results.gameSession.lastEventDate) {
             results.gameSession.lastEventDate = Date();
-        }
+        }*/
         res.render('playerSession', { title: 'Timeline',
             gameSession: results.gameSession,
             timeline: results.timeline,
             gm: results.gameMaster,
             actionTimes: results.actionTimes,
             gameMaster: req.session.gameMaster,
-            refresh: 'refresh'
+            refresh: 'refresh',
+            foo: 'foo'
         } );
     });
 };
 
-
+/*
 exports.lastEventDate = function(req, res) {
     GameSession.findById(req.params.gsid, function(err, gameSession) {
         if (err) {
@@ -108,4 +109,4 @@ exports.lastEventDate = function(req, res) {
             res.json({lastEventDate: time });
         }
     });
-};
+};*/

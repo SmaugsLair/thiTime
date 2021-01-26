@@ -74,6 +74,7 @@ exports.load = function(req, res, next) {
             gameMaster: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents,
+            announce: 'announce'
         } );
     });
 };
@@ -140,9 +141,9 @@ exports.timeline_event_update = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        let sessionParam = {
+       /* let sessionParam = {
             lastEventDate: Date()
-        };
+        };*/
 
         let name = req.body.name;
         if (!name) {
@@ -171,9 +172,8 @@ exports.timeline_event_update = function(req, res, next) {
         let actionTime = req.body.actionTime;
         if (!isNaN(actionTime) && actionTime > 0) {
             time = Number(actionTime) +time;
-            sessionParam = {
-                lastEventId: results.timeLineEvent._id,
-                lastEventDate: Date()
+            var sessionParam = {
+                lastEventId: results.timeLineEvent._id
             };
         }
 

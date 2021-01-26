@@ -9,7 +9,7 @@ let GameSessionSchema = new Schema({
     name: {type: String, required: true},
     gameMasterId : {type: Schema.Types.ObjectId, ref: 'GameMaster', required: true},
     lastEventId: {type: Schema.Types.ObjectId, ref: 'TimelineEvent', required: false},
-    lastEventDate: {type: Date, required: false}
+    //lastEventDate: {type: Date, required: false}
 });
 
 GameSessionSchema.pre('deleteOne', function(next) {
