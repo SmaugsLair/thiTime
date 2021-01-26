@@ -1,6 +1,6 @@
 const gsid = document.getElementById("gameSessionID").value;
 
-const ws = new WebSocket('ws://'+location.hostname+':3030');
+const ws = new WebSocket('ws://'+location.hostname+':80');
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);

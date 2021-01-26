@@ -80,9 +80,9 @@ const WebSocketServer = require('ws').Server;
 
 const wss = new WebSocketServer({server: server}, function(){});
 
-const wsPort = process.env.wsPort ? Number(process.env.wsPort) : 3030;
+//const wsPort = process.env.wsPort ? Number(process.env.wsPort) : 3030;
 
-server.listen(wsPort);
+server.listen(80);
 
 
 //const socketServer = new WebSocket.Server({port: 3000});
