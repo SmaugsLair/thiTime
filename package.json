@@ -17,11 +17,11 @@
     "mongoose": "^5.11.8",
     "monk": "^7.3.2",
     "morgan": "^1.9.1",
-    "pug": "^3.0.0"
+    "pug": "^3.0.0",
+    "ws": "^7.4.2"
   },
   "description": "THI Time Tracker",
   "main": "app.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SmaugsLair/thiTime.git"

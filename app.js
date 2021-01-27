@@ -3,6 +3,7 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+const WebSocket = require('ws'); // new
 
 let indexRouter = require('./routes/index');
 
@@ -13,8 +14,6 @@ let app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
-//placeholder
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -59,8 +58,6 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
-//app.use('/users', usersRouter);
-//app.use('/games', gamesRouter );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,6 +73,38 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+const server = require('http').createServer();
+const WebSocketServer = require('ws').Server;
+
+const wss = new WebSocketServer({server: server}, function(){});
+
+//const wsPort = process.env.wsPort ? Number(process.env.wsPort) : 3030;
+
+server.listen(80);
+
+
+//const socketServer = new WebSocket.Server({port: 3000});
+wss.on('connection', (socketClient) => {
+  //console.log('connected');
+  //console.log('client Set length: ', socketServer.clients.size);
+  //socketClient.on('close', (socketClient) => {
+    //console.log('closed');
+    //console.log('Number of clients: ', socketServer.clients.size);
+  //});
+
+  //socketClient.send(JSON.stringify('Howdy!'));
+  socketClient.on('message', (message) => {
+    //console.log('socketClient, on message:'+message);
+    //const jsoned = JSON.stringify([message]);
+    //console.log('jsoned:'+jsoned);
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
 });
 
 module.exports = app;
