@@ -1,15 +1,12 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
-const WebSocket = require('ws'); // new
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const indexRouter = require('./routes/index');
+const session = require('client-sessions');
 
-let indexRouter = require('./routes/index');
-
-let session = require('client-sessions');
-
-let app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +26,7 @@ app.use(session({
 }));
 
 //Import the mongoose module
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 let mongoDB = 'mongodb://127.0.0.1/thiTime';
 if (process.env.NODE_ENV === "development") {
@@ -47,12 +44,13 @@ else {
 
 //console.log('mongoDb:'+mongoDB);
 //Set up default mongoose connection
-mongoose.connect(mongoDB,
-    {useNewUrlParser: true,
-      useUnifiedTopology: true});
+mongoose.connect(mongoDB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true});
 
 //Get the default connection
-let db = mongoose.connection;
+const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

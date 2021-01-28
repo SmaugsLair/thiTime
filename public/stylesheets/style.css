@@ -206,3 +206,9 @@ tr.newEvent input {
 tr.newEvent button {
   border-width: 1px;
 }
+
+output.timeout {
+  margin: 20px;
+  padding: 10px;
+  color: red;
+}

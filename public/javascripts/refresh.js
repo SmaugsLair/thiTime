@@ -1,19 +1,26 @@
 let pageDate = document.getElementById("lastEventDate").value;
 let gameSessionID = document.getElementById("gameSessionID").value;
 
-let x = setInterval(function() {
-    checkForNewEvent();
-}, 2000);
+const msBetweenChecks = 2000;
+const minutesBeforeCancel = 10;
+const checksBeforeCancel =  (minutesBeforeCancel * 60 * 1000)/msBetweenChecks;
 
-//getText();
+const interval = setInterval(checkForNewEvent, msBetweenChecks);
 
-//checkForNewEvent();
+let checks = 0;
 
 async function checkForNewEvent() {
-    let response = await fetch('/lastEventDate/'+gameSessionID);
-    let data = await response.json();
-    if (data.lastEventDate > pageDate) {
-        location.reload();
+    ++checks;
+    if (checks > checksBeforeCancel) {
+        clearInterval(interval);
+        document.getElementById('timeout').value = 'Auto-refresh has timed out. Refresh the page to reactivate.'
+    }
+    else {
+        let response = await fetch('/lastEventDate/' + gameSessionID);
+        let data = await response.json();
+        if (data.lastEventDate > pageDate) {
+            location.reload();
+        }
     }
 }
 
