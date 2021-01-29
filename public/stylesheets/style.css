@@ -212,3 +212,6 @@ output.timeout {
   padding: 10px;
   color: red;
 }
+.middle {
+  text-align: center;
+}
