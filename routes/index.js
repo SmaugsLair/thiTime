@@ -6,6 +6,7 @@ const gameSessionController = require('../controllers/gameSessionController');
 const timelineController = require('../controllers/timelineController');
 const loginController = require('../controllers/loginController');
 const playerController = require('../controllers/playerController');
+const diceController = require('../controllers/diceController');
 
 function requireLogin (req, res, next) {
   let gameMaster = req.session.gameMaster;
@@ -54,6 +55,11 @@ router.get('/playerSessions', playerController.playerSessions);
 router.get('/playerSession/:gmid/:gsid', playerController.playerSession);
 
 router.get('/lastEventDate/:gsid', playerController.lastEventDate);
+
+router.get('/dice', diceController.load);
+router.post('/dice/roll', diceController.roll);
+router.post('/dice/hero', diceController.hero);
+router.post('/dice/drama', diceController.drama);
 
 module.exports = router;
 
