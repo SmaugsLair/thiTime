@@ -54,7 +54,7 @@ router.get('/atds', atdController.atd_list);
 router.get('/playerSessions', playerController.playerSessions);
 router.get('/playerSession/:gmid/:gsid', playerController.playerSession);
 
-router.get('/lastEventDate/:gsid', playerController.lastEventDate);
+//router.get('/lastEventDate/:gsid', playerController.lastEventDate);
 
 router.get('/dice', diceController.load);
 router.post('/dice/roll', diceController.roll);

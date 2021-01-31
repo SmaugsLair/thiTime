@@ -9,8 +9,8 @@ exports.newServer= function(server) {
     wss.on('connection', (webSocketClient) => {
         //send feedback to the incoming connection
         //webSocketClient.send('{ "connection" : "ok"}');
-        console.log('WS connection ');
-        console.log('ws.url:'+webSocketClient.url);
+        //console.log('WS connection ');
+        //console.log('ws.url:'+webSocketClient.url);
 
         //when a message is received
         webSocketClient.on('message', (message) => {
@@ -25,11 +25,11 @@ exports.newServer= function(server) {
 }
 
 exports.gameUpdate = function(gameSessionId) {
-    console.log('api:'+gameSessionId);
+    //console.log('api:'+gameSessionId);
     const message = JSON.stringify(
         { 'gameSessionId': gameSessionId});
 
-    console.log('api message:'+message);
+    //console.log('api message:'+message);
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(message);

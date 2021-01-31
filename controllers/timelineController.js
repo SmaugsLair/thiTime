@@ -144,9 +144,9 @@ exports.timeline_event_update = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        let sessionParam = {
+        let sessionParam;/* = {
             lastEventDate: Date()
-        };
+        };*/
 
         let name = req.body.name;
         if (!name) {
@@ -176,8 +176,8 @@ exports.timeline_event_update = function(req, res, next) {
         if (!isNaN(actionTime) && actionTime > 0) {
             time = Number(actionTime) +time;
             sessionParam = {
-                lastEventId: results.timeLineEvent._id,
-                lastEventDate: Date()
+                lastEventId: results.timeLineEvent._id
+                /*lastEventDate: Date()*/
             };
         }
 

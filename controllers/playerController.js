@@ -64,7 +64,7 @@ exports.playerSession = function(req, res) {
             let lastEventTime;
             for (let item of results.timeline) {
                 if (lastEventId.equals(item._id)) {
-                    console.log('last event was for:'+item.name);
+                    //console.log('last event was for:'+item.name);
                     lastEventTime = item.time;
                     item.lastEvent = true;
                 }
@@ -78,9 +78,9 @@ exports.playerSession = function(req, res) {
                 item.reactTime = 0;
             }
         }
-        if (!results.gameSession.lastEventDate) {
+       /* if (!results.gameSession.lastEventDate) {
             results.gameSession.lastEventDate = Date();
-        }
+        }*/
         res.render('playerSession', { title: 'Timeline',
             gameSession: results.gameSession,
             timeline: results.timeline,
@@ -92,7 +92,7 @@ exports.playerSession = function(req, res) {
     });
 };
 
-
+/*
 exports.lastEventDate = function(req, res) {
     GameSession.findById(req.params.gsid, function(err, gameSession) {
         if (err) {
@@ -108,4 +108,4 @@ exports.lastEventDate = function(req, res) {
             res.json({lastEventDate: time });
         }
     });
-};
+};*/
