@@ -5,6 +5,7 @@ block content
     div Session: #{gameSession.name}
     label(for='gmName') GameMaster:
     a#gmName(href='/gm') #{gameMaster.name}
+    input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
     table.timeline
       thead

@@ -5,6 +5,7 @@ const GameSession = require('../models/gamesession');
 const TimeLineEvent = require('../models/timelineevent');
 const ActionTimeDefault = require('../models/atd');
 const CollectedEvent = require('../models/collectedevent');
+const ws = require('../websocket')
 
 
 
@@ -74,6 +75,7 @@ exports.load = function(req, res, next) {
             gameMaster: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents,
+            //announce: true
         } );
     });
 };
@@ -93,6 +95,7 @@ exports.timeline_event_create = function(req, res, next) {
         if (err) {
             return next(err);
         }
+        ws.gameUpdate(req.params.gsid);
         res.redirect('/timeline/' + req.params.gsid);
     });
 }
@@ -119,6 +122,7 @@ exports.timeline_event_import = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
+                ws.gameUpdate(req.params.gsid);
                 res.redirect('/timeline/' + req.params.gsid);
             });
         });
@@ -206,6 +210,7 @@ exports.timeline_event_update = function(req, res, next) {
                 return next(err);
             }
         });
+        ws.gameUpdate(results.timeLineEvent.gameSessionId);
         res.redirect('/timeline/'+results.timeLineEvent.gameSessionId);
 
     });
@@ -217,6 +222,7 @@ exports.timeline_event_delete = function(req, res, next) {
 
     TimeLineEvent.deleteOne({_id:req.params.tid}, function deleteTimelineEvent(err) {
         if (err) { return next(err); }
+        ws.gameUpdate(req.params.gsid);
         res.redirect('/timeline/'+req.params.gsid);
     })
 };
@@ -231,6 +237,7 @@ exports.timeline_event_clone = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
+                ws.gameUpdate(req.params.gsid);
                 res.redirect('/timeline/' + req.params.gsid);
             });
         }
@@ -296,6 +303,7 @@ exports.timeline_event_updateDeltas = function(req, res, next) {
             if (err) {
                 return next(err);
             }
+            ws.gameUpdate(req.params.gsid);
             res.redirect('/timeline/'+req.params.gsid);
         });
 

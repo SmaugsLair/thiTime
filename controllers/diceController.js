@@ -1,72 +1,90 @@
 const GameMaster = require('../models/gamemaster');
 
+function rollD10() {
+    return Math.floor(Math.random() * Math.floor(10)) + 1;
+}
+function calcPercent(sum, count) {
+    return Math.floor((sum/(10 * Math.min(count, 10)))*100)
+}
+
 exports.load = function(req, res) {
-    res.render('dice');
+    res.render('dice' , {
+            title: 'Dice Roller',
+            maxDice: 10
+        });
 };
 
 exports.roll = function(req, res) {
     let count, sum = 0;
     let dice = [];
     for (count = 0;count < req.body.diceCount; ++count) {
-        let roll = Math.floor(Math.random() * Math.floor(10)) + 1;
+        let roll = rollD10();
         sum += roll;
         //console.log('roll #'+count+': '+roll);
         dice.push(roll);
     }
     dice.sort(function(a, b){return a-b});
     let lowest = [];
-    while (dice.length > 10) {
+    while (dice.length > req.body.maxDice) {
         let val = dice.shift();
         sum -= val;
         lowest.push(val);
     }
-    let percent = Math.floor((sum/(10 * Math.min(req.body.diceCount, 10)))*100);
-    console.log('percent:'+percent);
     res.render('dice',
         { title: 'Roll Results',
           diceCount: req.body.diceCount,
+          maxDice: req.body.maxDice,
           dice: JSON.stringify(dice),
           lowest: (lowest.length>0? JSON.stringify(lowest): false),
           sum: sum,
-          percent: percent,
+          percent: calcPercent(sum, req.body.diceCount),
           baseRoll: true});
 };
 
 exports.hero = function(req, res) {
-    let oldSum = Number(req.body.sum);
-    let dice = req.body.dice;
-    console.log('hero roll with dice:'+dice);
-    let diceArray = JSON.parse(dice);
-    console.log('diceArray:'+diceArray);
-    let roll = Math.floor(Math.random() * Math.floor(10)) + 1;
-    console.log('roll:'+roll);
+    let sum = Number(req.body.sum);
+    let dice = JSON.parse(req.body.dice);
+    let roll = rollD10();
+    sum += roll;
+    dice.push(roll);
+    dice.sort(function(a, b){return a-b});
+    let lowest = dice.shift();
+    sum -= lowest;
     res.render('dice',
         { title: 'Hero Roll Results',
             diceCount: req.body.diceCount,
-            dice: req.body.dice,
-            heroRoll: roll,
-            oldSum: oldSum,
-            sum: oldSum + roll});
+            maxDice: req.body.maxDice,
+            dice: JSON.stringify(dice),
+            lowest: lowest,
+            percent: calcPercent(sum, req.body.diceCount),
+            oldSum: Number(req.body.sum),
+            sum: sum});
 };
 
 exports.drama = function(req, res) {
-    let oldSum = Number(req.body.sum);
     let dice = JSON.parse(req.body.dice);
-    let sum = Number(req.body.sum);;
-    let dropped = dice.shift();
-    sum -= dropped;
-    let dramaRoll = [];
+    let sum = Number(req.body.sum);
     for (count = 0;count < 2; ++count) {
-        let roll = Math.floor(Math.random() * Math.floor(10)) + 1;
+        let roll = rollD10();
         sum += roll;
-        dramaRoll.push(roll);
+        dice.push(roll);
     }
+    dice.sort(function(a, b){return a-b});
+    let lowest = [];
+    do {
+        let val = dice.shift();
+        sum -= val;
+        lowest.push(val);
+    }
+    while (dice.length > req.body.maxDice) ;
     res.render('dice',
         { title: 'Drama Roll Results',
             diceCount: req.body.diceCount,
+            maxDice: req.body.maxDice,
             dice: JSON.stringify(dice),
-            dramaRoll: JSON.stringify(dramaRoll),
-            oldSum: oldSum,
+            lowest: lowest,
+            percent: calcPercent(sum, dice.length),
+            oldSum: Number(req.body.sum),
             sum: sum});
 };
 

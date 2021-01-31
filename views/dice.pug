@@ -5,15 +5,25 @@ block content
       tr
         td Number of d10s
         td
-          input(type='number', name='diceCount', min=1, max=100, required=true, value=diceCount)
+          input(type='number', name='diceCount', min=1, max=99, required=true, value=diceCount)
         td
           button(type='submit', formaction='/dice/roll') Roll
-    if (baseRoll)
+      tr
+        td MaxDice
+        td
+          input(type='number', name='maxDice', min=1, max=99, required=true, value=maxDice)
+        td (ask GM)
+    br
+    if (sum)
       input#sum(type='hidden', value=sum, name='sum')
       input#dice(type='hidden', value=dice, name='dice')
       table
         tr
-          td Sum: #{sum}
+          td Sum:
+            if (oldSum)
+              output #{oldSum} --> #{sum}
+            else
+              output #{sum}
           td
             div.w3-border
               div.w3-grey(style='height:4px;width:55%')
@@ -32,30 +42,14 @@ block content
         tr
           td Spend Hero Token
           td
-            button(type='submit', formaction='/dice/hero') Roll 1 more
+            button(type='submit', formaction='/dice/hero') Roll 1 more, drop lowest
         tr
           td.middle or
           td
         tr
           td Spend Drama Point
           td
-            button(type='submit', formaction='/dice/drama') Drop lowest, roll 2 more
-    if (heroRoll)
-      table
-        tr
-          td Sum
-          td #{oldSum} --> #{sum}
-        tr
-          td Dice
-          td #{dice} + #{heroRoll}
-    if (dramaRoll)
-      table
-        tr
-          td Sum
-          td #{oldSum} --> #{sum}
-        tr
-          td Dice
-          td #{dice} + #{dramaRoll}
+            button(type='submit', formaction='/dice/drama') Roll 2 more, drop lowest
 
 
 
