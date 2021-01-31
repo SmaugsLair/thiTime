@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const session = require('client-sessions');
+const favicon = require('serve-favicon');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public') , {
   maxAge: '3600000' //1 hour
 }));
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 app.use(session({
   cookieName: 'session',
   secret: 'iCantBelieveThatTheAnsweris42',
