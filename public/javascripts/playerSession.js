@@ -27,7 +27,10 @@ function filltimeline() {
         let timeline = data.timeline;
         $('#timelineTable').renderTable({
             template: rowTemplate,
-            data: timeline
+            data: timeline,
+            pagination: {
+                rowPageCount: 20 // maximum rows per one page
+            },
         });
     });
 }
