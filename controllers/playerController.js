@@ -4,7 +4,7 @@ const GameSession = require('../models/gamesession');
 const TimeLineEvent = require('../models/timelineevent');
 const ActionTimeDefault = require('../models/atd');
 
-exports.playerSessions = function(req, res) {
+exports.playerSessions = function(req, res, next) {
 
     async.parallel({
         sessionList: function(callback) {
@@ -28,12 +28,40 @@ exports.playerSessions = function(req, res) {
 };
 
 
-exports.playerSession = function(req, res) {
+exports.playerSession = function(req, res, next) {
     async.parallel({
         gameMaster: function(callback) {
             GameMaster.findById(req.params.gmid)
                 .exec(callback)
         },
+        gameSession: function(callback) {
+            GameSession.findById(req.params.gsid)
+                .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) {
+            return next(err);
+        }
+        if (results.gameSession==null) { // No results.
+            let err = new Error('GameSession not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Successful, so render.
+
+        res.render('playerSession', { title: 'Timeline',
+            gameSession: results.gameSession,
+            gm: results.gameMaster,
+            gameMaster: req.session.gameMaster,
+            js: 'playerSession.js'
+        } );
+    });
+};
+
+
+
+exports.playerTimeline = function(req, res, next) {
+    async.parallel({
         gameSession: function(callback) {
             GameSession.findById(req.params.gsid)
                 .exec(callback)
@@ -67,6 +95,7 @@ exports.playerSession = function(req, res) {
                     //console.log('last event was for:'+item.name);
                     lastEventTime = item.time;
                     item.lastEvent = true;
+                    item.rowClass = 'lastEvent';
                 }
             }
             for (let item of results.timeline) {
@@ -78,34 +107,23 @@ exports.playerSession = function(req, res) {
                 item.reactTime = 0;
             }
         }
-       /* if (!results.gameSession.lastEventDate) {
-            results.gameSession.lastEventDate = Date();
-        }*/
-        res.render('playerSession', { title: 'Timeline',
-            gameSession: results.gameSession,
+
+        for (let item of results.timeline) {
+            let titleString = 'Action (TU) *=Can react\n__________________\n';
+            let foundOne = false;
+            for (let actionTime of results.actionTimes) {
+                let total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0);
+                let reaction = (total <= item.reactTime ? '*' : '');
+                foundOne = (reaction ? true : foundOne);
+                titleString += '\n' + actionTime.name + ' (' + total + ') ' + reaction;
+            }
+            item.actionValue = foundOne ? '*' : '';
+            item.actionTitle = titleString;
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send({
             timeline: results.timeline,
-            gm: results.gameMaster,
-            actionTimes: results.actionTimes,
-            gameMaster: req.session.gameMaster,
-            refresh: 'refresh'
+            actionTimes: results.actionTimes
         } );
     });
 };
-
-/*
-exports.lastEventDate = function(req, res) {
-    GameSession.findById(req.params.gsid, function(err, gameSession) {
-        if (err) {
-            return next(err);
-        }
-        if (gameSession==null) { // No results.
-            let err = new Error('GameSession not found');
-            err.status = 404;
-            return next(err);
-        }
-        else {
-            const time = gameSession.lastEventDate ? gameSession.lastEventDate.getTime() : 0;
-            res.json({lastEventDate: time });
-        }
-    });
-};*/

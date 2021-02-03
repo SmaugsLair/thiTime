@@ -215,3 +215,15 @@ output.timeout {
 .middle {
   text-align: center;
 }
+
+table#diceResults {
+  display: none;
+}
+tr#dropped {
+  display: none;
+}
+
+.diceZone {
+  background-color: #e0e0e0;
+}
+

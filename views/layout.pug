@@ -29,11 +29,15 @@ html
       ul
         li
           a(href='/playerSessions') Player Session views
-        li
-          a(href='/dice') Dice Roller
+
   script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
   script(src='/javascripts/global.js')
+  script(src='/javascripts/table-renderer.js')
+
+  if (js)
+    script(src='/javascripts/'+js)
   if (refresh)
     script(src='/javascripts/refresh.js')
   if (announce)
     script(src='/javascripts/announce.js')
+

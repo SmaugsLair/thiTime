@@ -291,9 +291,6 @@ exports.timeline_event_updateDeltas = function(req, res, next) {
         let temp = new TimeLineEvent();
 
         for (let item of results.actionTimes) {
-            console.log('item.name:'+item.name);
-            console.log('req.body[item.name]:'+req.body[item.name]);
-
             temp.deltas.set(item.name, req.body[item.name]);
         }
 

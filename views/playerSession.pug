@@ -8,9 +8,6 @@ block content
     label(for='gmName') GameMaster:
     output#gmName  #{gm.name}
     br
-    output#timeout.timeout
-    br
-    //input#lastEventDate(type='hidden', value=gameSession.lastEventDate.getTime())
     input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
     table.playerView
@@ -22,29 +19,50 @@ block content
           th.min Time
           th.min React
       tbody
-        each item in timeline
-            tr(style="background-color:"+item.color, class=(item.lastEvent?"lastEvent":""))
-              td
-                input(disabled=true, value=item.name)
-              td.number
-                input(disabled=true, value=item.stun, size=2)
-              td
-                - let titleString = 'Action (TU) *=Can react\n__________________\n'
-                - let foundOne = false
-                each actionTime in actionTimes
-                  - let total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
-                  - let reaction = (total <= item.reactTime ? '*' : '')
-                  - foundOne = (reaction?true:foundOne)
-                  - titleString += '\n' + actionTime.name + ' ('+ total +') ' +  reaction
-                input(disabled=true, value=(foundOne?'*':'...'), title=titleString, size=3)
-              td.number
-                input(disabled=true, value=item.time, size=3)
-              td.lastEvent
-                input(disabled=true, value=item.reactTime, size=3)
-        else
-          tr
-            td Empty Timeline
-            td ...
-            td ...
-            td ...
-            td ...
+  br
+  #dizeZone.diceZone Dice Roller
+    form#diceForm(method='POST')
+      table
+        tr
+          td Number of d10s
+          td
+            input(type='number', name='diceCount', min=1, max=99, required=true, value=3)
+          td
+            button.dice(type='submit' name='roll') Roll
+        tr
+          td MaxDice
+          td
+            input(type='number', name='maxDice', min=1, max=99, required=true, value=10)
+          td (ask GM)
+      br
+      br
+      table#diceResults
+        tr
+          td Sum:
+            output#sumString
+            input#sum(type='hidden', name='sum')
+          td
+            div.w3-border
+              div.w3-grey(style='height:4px;width:55%')
+            div.w3-border
+              div#rollBar.w3-container.w3-center(style='height:20px')
+        tr
+          td Dice
+          td
+            output#diceString
+            input#dice(type='hidden', name='dice')
+        tr#dropped
+          td Dropped
+          td
+            output#droppedDice
+        tr
+          td Spend Hero Token
+          td
+            button.dice(type='submit', name='hero') Roll 1 more, drop lowest
+        tr
+          td.middle or
+          td
+        tr
+          td Spend Drama Point
+          td
+            button.dice(type='submit', name='drama') Roll 2 more, drop lowest

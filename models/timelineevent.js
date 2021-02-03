@@ -15,6 +15,10 @@ let TimeLineEventSchema = new Schema({
         default: {'Thought': 0, 'Twitch': 0, 'Move': 0, 'Perception': 0, 'Targeted': 0, 'Full Round': 0, 'Recovery': 0, 'Repair': 0}},
     hidden: {type: Boolean, required: true, default: false},
     lastEvent: {type: Boolean, required: false, default: false},
+    //below are workarounds for virtual class not working in JQuery table library
+    rowClass: {type: String, default:''},
+    actionValue: {type: String, default:''},
+    actionTitle: {type: String, default:''}
     //eventType: enum //player, npc, gm
 });
 
@@ -42,5 +46,15 @@ TimeLineEventSchema
         })
         return value;
     });
+/*
+
+TimeLineEventSchema
+    .virtual('rowClass')
+    .get(function () {
+        if (this.lastEvent) {
+            return 'lastEvent';
+        }
+        return '';
+    });*/
 
 module.exports = mongoose.model('TimeLineEventModel', TimeLineEventSchema );
