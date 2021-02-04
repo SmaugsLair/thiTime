@@ -75,7 +75,7 @@ exports.load = function(req, res, next) {
             gameMaster: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents,
-            //announce: true
+            js: 'timeline.js'
         } );
     });
 };

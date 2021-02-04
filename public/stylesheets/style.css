@@ -226,4 +226,7 @@ tr#dropped {
 .diceZone {
   background-color: #e0e0e0;
 }
+.diceMessages {
+  background-color: lavender;
+}
 

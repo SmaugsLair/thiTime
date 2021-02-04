@@ -8,7 +8,6 @@ block content
     label(for='gmName') GameMaster:
     output#gmName  #{gm.name}
     br
-    input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
     table.playerView
       thead
@@ -22,7 +21,13 @@ block content
   br
   #dizeZone.diceZone Dice Roller
     form#diceForm(method='POST')
+      input#gameSessionID(type='hidden', value=gameSession._id, name='gameSessionID')
       table
+        tr
+          td Character Name
+          td(colspan='2')
+            input(type='text', name='characterName', placeholder='Leave blank or share rolls')
+
         tr
           td Number of d10s
           td
@@ -66,3 +71,6 @@ block content
           td Spend Drama Point
           td
             button.dice(type='submit', name='drama') Roll 2 more, drop lowest
+  br
+  #diceMessages.diceMessages
+    ul
