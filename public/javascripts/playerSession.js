@@ -2,6 +2,12 @@ const gsid = document.getElementById("gameSessionID").value;
 
 const ws = new WebSocket('ws://'+location.host);
 let start = Date.now();
+var wsPing = setInterval(pinger, 55000);
+
+function pinger() {
+    console.log('pinger:' + (Date.now() - start));
+    ws.send('ping');
+}
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
