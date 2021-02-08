@@ -1,0 +1,17 @@
+PowerSet:
+name: String
+details: String
+abilityMods: [{abilityName:Integer}...]
+
+Power:
+name: String
+powerSets: [{PowerSet:tier}...]  //tier is 10 max?
+short description: String
+long description: String
+abilityMods: [{abilityName:Integer}...]
+prereq: Power
+max: Integer (1-?)
+
+
+
+

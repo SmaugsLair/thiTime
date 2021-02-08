@@ -10,3 +10,8 @@ ws.onmessage = (event) => {
         }
     }
 };
+
+ws.onopen = () => {
+    // Send a ping event every 10 seconds
+    setInterval(() => ws.send(JSON.stringify({ event: "ping" })), 10000);
+}

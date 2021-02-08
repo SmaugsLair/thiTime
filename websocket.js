@@ -6,11 +6,7 @@ exports.newServer= function(server) {
     //console.log('new WS server');
     wss = new WebSocket.Server({ server });
     wss.on('connection', (webSocketClient) => {
-        //send feedback to the incoming connection
-        //webSocketClient.send('{ "connection" : "ok"}');
-        //console.log('WS connection ');
-        //console.log('ws.url:'+webSocketClient.url);
-
+        console.log('WS client connection ');
         //when a message is received
         webSocketClient.on('message', (message) => {
            // console.log('message:'+message);
@@ -20,6 +16,9 @@ exports.newServer= function(server) {
                 }
             });
         });
+    });
+    wss.on('close', function close() {
+        console.log('WS close');
     });
 }
 

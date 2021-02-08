@@ -14,6 +14,9 @@ ws.onmessage = (event) => {
         }
     }
 };
+ws.onclose = (event) => {
+    console.log('ws closed');
+};
 
 let rowTemplate =
 '<tr style="background-color:<%this.color%>" class="<%this.rowClass%>">' +
