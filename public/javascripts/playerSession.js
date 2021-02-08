@@ -1,7 +1,7 @@
 const gsid = document.getElementById("gameSessionID").value;
 
 const ws = new WebSocket('ws://'+location.host);
-let start = Date().now();
+let start = Date.now();
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
@@ -16,7 +16,7 @@ ws.onmessage = (event) => {
     }
 };
 ws.onclose = (event) => {
-    console.log('ws closed:' + (Date.now - start));
+    console.log('ws closed:' + (Date.now() - start));
 };
 
 let rowTemplate =
