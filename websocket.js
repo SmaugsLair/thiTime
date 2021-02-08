@@ -7,10 +7,8 @@ exports.newServer= function(server) {
     wss = new WebSocket.Server({ server });
     wss.on('connection', (webSocketClient) => {
         console.log('WS client connection ');
-        //when a message is received
         webSocketClient.on('message', (message) => {
-           console.log('message:'+message);
-           if (message !== 'ping') {
+           if (message !== 'keepAlive') {
                wss.clients.forEach((client) => {
                    if (client.readyState === WebSocket.OPEN) {
                        client.send(message);
