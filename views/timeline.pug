@@ -34,6 +34,7 @@ block content
                   option(value=0) Choose action
                   each actionTime in actionTimes
                     - let total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                    - if (actionTime.name === 'Recovery') total -= item.stun;
                     option(value=total) #{actionTime.name} (#{total})
               td
                 input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden, checked=item.hidden)
@@ -43,6 +44,7 @@ block content
                 - let titleString = ''
                 each actionTime in actionTimes
                   - let total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0)
+                  - if (actionTime.name === 'Recovery') total -= item.stun;
                   - if (total <= item.reactTime) { titleString += '\n' + actionTime.name + ' ' + total}
                 //- for (var actionTime in actionTimes) { var total = actionTime.time + item.stun + (item.deltas ? item.deltas.get(actionTime.name) : 0); if (total < item.reactTime) { titleString += '\n' + actionTime.name + ' ' + total}}
                 input.reactTime(disabled=true, value=item.reactTime, type='number', min=-999, max=999, title=titleString)

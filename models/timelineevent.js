@@ -47,14 +47,11 @@ TimeLineEventSchema
         return value;
     });
 /*
-
-TimeLineEventSchema
-    .virtual('rowClass')
-    .get(function () {
-        if (this.lastEvent) {
-            return 'lastEvent';
-        }
-        return '';
-    });*/
+TimeLineEventSchema.methods.rowClass = function() {
+    if (this.lastEvent) {
+        return 'lastEvent';
+    }
+    return '';
+  };*/
 
 module.exports = mongoose.model('TimeLineEventModel', TimeLineEventSchema );
