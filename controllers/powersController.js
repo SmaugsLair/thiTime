@@ -57,8 +57,6 @@ exports.upload = function (req, res, next) {
             columnToKey: {'*': '{{columnHeader}}'}
         });
 
-        //console.log(excelData);
-        //console.log('excelData[\'Powers List\'][0].MaxTaken '+excelData['Powers List'][0].MaxTaken)
         let powerSets = [];
         for (let item of excelData.PowerSetInformation) {
             const stub = {abilityMods: new Map(), powers: new Map()};
@@ -77,11 +75,7 @@ exports.upload = function (req, res, next) {
                     stub[key] = value;
                 }
             }
-           /* console.log('------------stub------------------');
-            console.log(JSON.stringify(stub, null, 2));*/
             const newPs = new PowerSet(stub);
-          /*  console.log('------------newPs------------------');
-            console.log(JSON.stringify(newPs, null, 2));*/
             powerSets.push(newPs);
         }
         let powers = [];
@@ -89,11 +83,9 @@ exports.upload = function (req, res, next) {
             const stub = {abilityMods: new Map()};
             for (const [key, value] of Object.entries(item)) {
                 if (key.startsWith('set_')) {
-                    console.log("key: "+key+" -- value:"+value);
                     let psName = key.substring(4);
                     const ps = powerSets.find(({ name }) => name === psName);
                     if (ps) {
-                        console.log(JSON.stringify(ps, null, 2))
                         let array = ps.powers.get(value.toString());
                         if (array) {
                             array.push(item.name);
