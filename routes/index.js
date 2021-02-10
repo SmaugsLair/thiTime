@@ -7,6 +7,7 @@ const timelineController = require('../controllers/timelineController');
 const loginController = require('../controllers/loginController');
 const playerController = require('../controllers/playerController');
 const diceController = require('../controllers/diceController');
+const powersController = require('../controllers/powersController');
 
 function requireLogin (req, res, next) {
   let gameMaster = req.session.gameMaster;
@@ -60,35 +61,7 @@ router.post('/dice/roll', diceController.roll);
 router.post('/dice/hero', diceController.hero);
 router.post('/dice/drama', diceController.drama);
 
-module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-/*router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-// GET home page.
-router.get('/', function(req, res) {
-  res.redirect('/games');
-});
+router.get('/powersUpload', requireLogin, powersController.viewUpload);
+router.post('/powersUpload',requireLogin,  powersController.upload);
 
 module.exports = router;
-
- */

@@ -1,0 +1,19 @@
+extends layout
+block content
+  form(method='POST' enctype='multipart/form-data')
+    label(for='powers') Powers Spreadsheet
+    input#powers(type='file' name='powers')
+    button(type='submit') Upload
+    br
+    label #{message}
+    br
+    label Power Sets
+    pre #{powerSets}
+    br
+    label Powers
+    pre #{powers}
+
+
+
+
+
