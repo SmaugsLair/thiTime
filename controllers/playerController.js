@@ -22,7 +22,7 @@ exports.playerSessions = function(req, res, next) {
         res.render('playerSessions', { title: 'Player Sessions',
             sessionList: results.sessionList,
             gmList: results.gmList,
-            gameMaster: req.session.gameMaster,
+            user: req.session.user,
         } );
     });
 };
@@ -52,7 +52,7 @@ exports.playerSession = function(req, res, next) {
         res.render('playerSession', { title: 'Timeline',
             gameSession: results.gameSession,
             gm: results.gameMaster,
-            gameMaster: req.session.gameMaster,
+            user: req.session.user,
             js: 'playerSession.js'
         } );
     });

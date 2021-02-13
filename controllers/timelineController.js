@@ -13,7 +13,7 @@ const ws = require('../websocket')
 // Display timeline for one session
 exports.load = function(req, res, next) {
 
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     const gsid = req.params.gsid;
 
     async.parallel({
@@ -72,7 +72,7 @@ exports.load = function(req, res, next) {
         res.render('timeline', { title: 'Timeline',
             gameSession: results.gameSession,
             timeline: results.timeline,
-            gameMaster: gameMaster,
+            user: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents,
             js: 'timeline.js'
@@ -251,7 +251,7 @@ exports.timeline_event_collect = function(req, res, next) {
         function(err, doc) {
             const collectedEvent = new CollectedEvent(
                 { name: doc.name,
-                    gameMasterId: req.session.gameMaster._id,
+                    gameMasterId: req.session.user._id,
                     color: doc.color,
                     deltas: doc.deltas
                 }

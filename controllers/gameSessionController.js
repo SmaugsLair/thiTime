@@ -4,13 +4,13 @@ const TimeLineEvent = require('../models/timelineevent');
 
 // Start new session
 exports.game_session_create = function(req, res) {
-    res.render('newSession', { title: 'New Session', gameMaster: req.session.gameMaster });
+    res.render('newSession', { title: 'New Session', user: req.session.user });
 };
 
 exports.game_session_save = function(req, res, next) {
 
     const session = new GameSession(
-        {name: req.body.sessionName, gameMasterId: req.session.gameMaster._id}
+        {name: req.body.sessionName, gameMasterId: req.session.user._id}
     );
 
     session.save(function (err) {
@@ -40,7 +40,7 @@ exports.game_session_delete = function(req, res, next) {
         res.render('sessionDelete', { title: 'Delete Session',
             gameSession: results.gameSession,
             sessionEvents: results.sessionEvents,
-            gameMaster: req.session.gameMaster} );
+            user: req.session.user} );
     });
 
 };

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  table.powerSet
+    tbody
+      tr
+        td Super Hero Power
+        td #{powerSet.name}
+      tr
+        td(colspan=2) #{powerSet.openText}
+      tr
+        td(colspan=2) #{powerSet.abilityText}
+      tr
+        td(colspan=2) #{abMods}
+      tr
+        td(colspan=2) #{powerSet.powersText}
+      each item in powers
+        tr
+          td(colspan=2) #{item}
+
+
+

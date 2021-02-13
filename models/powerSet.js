@@ -6,7 +6,7 @@ let Schema = mongoose.Schema;
 
 let PowerSetSchema = new Schema({
     name: {type: String, required: true},
-    lastUpdate: {type: Date, required: true},
+    //lastUpdate: {type: Date, required: false},
     openText:{type: String, required: true},
     abilityText:{type: String, required: true},
     powersText:{type: String, required: true},
@@ -19,4 +19,4 @@ let PowerSetSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('PowerSetModel', PowerSetSchema );
+module.exports = mongoose.model('PowerSet', PowerSetSchema );

@@ -5,13 +5,32 @@ block content
     input#powers(type='file' name='powers')
     button(type='submit') Upload
     br
+    if error
+      label Errors
+      pre.error #{error}
+    br
     label #{message}
     br
-    label Power Sets
-    pre #{powerSets}
-    br
-    label Powers
-    pre #{powers}
+    if (newPowerSets)
+      label New Power Sets
+      pre #{newPowerSets}
+      br
+      br
+      label Updated Power Sets
+      pre #{updatedPowerSets}
+      br
+      br
+      label Unchanged Power Sets
+      pre #{unchangedPowerSets}
+      br
+      label New Powers
+      pre #{newPowers}
+      br
+      label Updated Powers
+      pre #{updatedPowers}
+      br
+      label Unchanged Powers
+      pre #{unchangedPowers}
 
 
 

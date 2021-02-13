@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public') , {
   maxAge: '3600000' //1 hour
 }));
+app.use(express.static(path.join(__dirname, "node_modules/tabulator-tables/dist")));
 app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 app.use(session({
   cookieName: 'session',
@@ -51,6 +52,7 @@ else {
 //console.log('mongoDb:'+mongoDB);
 //Set up default mongoose connection
 mongoose.connect(mongoDB, {
+  useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true});

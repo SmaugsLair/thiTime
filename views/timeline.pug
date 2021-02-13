@@ -4,7 +4,7 @@ block content
   strong
     div Session: #{gameSession.name}
     label(for='gmName') GameMaster:
-    a#gmName(href='/gm') #{gameMaster.name}
+    a#gmName(href='/gm') #{user.name}
     input#gameSessionID(type='hidden', value=gameSession._id)
   #timelineTable
     table.timeline

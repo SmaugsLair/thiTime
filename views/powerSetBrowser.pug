@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  ul
+    each item in powerSets
+      li
+        a(href='/powerSet/'+item._id) #{item.name}
+
+
+
+
+

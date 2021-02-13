@@ -7,10 +7,11 @@ const timelineController = require('../controllers/timelineController');
 const loginController = require('../controllers/loginController');
 const playerController = require('../controllers/playerController');
 const diceController = require('../controllers/diceController');
-const powersController = require('../controllers/powersController');
+const importController = require('../controllers/importController');
+const powerBrowserController = require('../controllers/powerBrowserController');
 
 function requireLogin (req, res, next) {
-  let gameMaster = req.session.gameMaster;
+  let gameMaster = req.session.user;
   if (!gameMaster) {
     res.redirect('/login');
   }
@@ -61,7 +62,13 @@ router.post('/dice/roll', diceController.roll);
 router.post('/dice/hero', diceController.hero);
 router.post('/dice/drama', diceController.drama);
 
-router.get('/powersUpload', requireLogin, powersController.viewUpload);
-router.post('/powersUpload',requireLogin,  powersController.upload);
+router.get('/powersUpload', requireLogin, importController.viewUpload);
+router.post('/powersUpload',requireLogin,  importController.upload);
+
+
+router.get('/powerSetBrowser', powerBrowserController.viewPowerSets);
+router.get('/powerSet/:psid', powerBrowserController.viewPowerSet);
+router.get('/powerBrowser', powerBrowserController.viewPowers);
+router.get('/powerList', powerBrowserController.powerList);
 
 module.exports = router;

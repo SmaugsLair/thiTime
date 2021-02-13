@@ -11,12 +11,12 @@ exports.login = function(req, res) {
             res.render('login', {error: 'Invalid credentials.'});
         }
         else if (gameMaster.validPassword(req.body.password)) {
-            req.session.gameMaster = gameMaster;
+            req.session.user = gameMaster;
             res.redirect('/gm');
         }
         else if (req.body.password == gameMaster.password) {
             console.log('Using insecure password, redirecting to better model');
-            req.session.gameMaster = gameMaster;
+            req.session.user = gameMaster;
             res.render('password_update',
                 {error: 'Please update your password.',
                     gameMaster: gameMaster });

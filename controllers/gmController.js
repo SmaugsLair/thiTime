@@ -22,20 +22,20 @@ exports.gm_list = function(req, res) {
 
 exports.gm_detail = function(req, res, next) {
 
-    const gameMaster = req.session.gameMaster;
+    const user = req.session.user;
 
-    console.log('gameMaster:'+gameMaster.name);
+    console.log('gameMaster:'+user.name);
 
     async.parallel({
         gm_sessions: function(callback) {
-            GameSession.find({ 'gameMasterId': gameMaster._id },'name')
+            GameSession.find({ 'gameMasterId': user._id },'name')
                 .exec(callback)
         }
     }, function(err, results) {
         if (err) { return next(err); } // Error in API usage.
         // Successful, so render.
         res.render('gm_detail', { title: 'Game Master Sessions',
-            gameMaster: gameMaster,
+            user: req.session.user,
             gm_sessions: results.gm_sessions } );
     });
 
@@ -45,7 +45,7 @@ exports.gm_detail = function(req, res, next) {
 exports.gm_collection = function(req, res, next) {
     console.log('gm_collection');
 
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     async.parallel({
         actionTimes: function(callback) {
             ActionTimeDefault.find({}, 'name time')
@@ -59,7 +59,7 @@ exports.gm_collection = function(req, res, next) {
         if (err) { return next(err); } // Error in API usage.
         // Successful, so render.
         res.render('gm_collection', { title: 'Game Master Collection',
-            gameMaster: gameMaster,
+            user: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents } );
     });
@@ -76,16 +76,16 @@ exports.collected_event_delete = function(req, res, next) {
 };
 
 exports.update = function (req, res, next) {
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     res.render('gm_update',
         { title: 'Game Master Update',
-            gameMaster: gameMaster}
+            user: gameMaster}
             );
 }
 
 exports.applyUpdate = function (req, res, next) {
 
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     const params = {
         name: req.body.username,
         displayName: req.body.displayName,
@@ -95,21 +95,21 @@ exports.applyUpdate = function (req, res, next) {
         if (err) {
             return next(err);
         }
-        req.session.gameMaster = result;
+        req.session.user = result;
         res.redirect('/updateGM');
     });
 }
 
 exports.updatePassword = function (req, res, next) {
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     res.render('password_update',
         { title: 'Password Update',
-            gameMaster: gameMaster}
+            user: gameMaster}
     );
 }
 
 exports.applyUpdatePassword = function (req, res, next) {
-    const gameMaster = req.session.gameMaster;
+    const gameMaster = req.session.user;
     const password = req.body.password1;
     const confirm = req.body.password2;
     let error;
@@ -147,7 +147,7 @@ exports.applyUpdatePassword = function (req, res, next) {
         res.render('password_update',
             {
                 title: 'Password Update',
-                gameMaster: gameMaster,
+                user: gameMaster,
                 error: error
             }
         );

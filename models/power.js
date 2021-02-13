@@ -4,18 +4,32 @@ const mongoose = require('mongoose');
 //Define a schema
 let Schema = mongoose.Schema;
 
+
+function numberOrFormula (value) {
+    if (value) {
+        if (isNaN(value)) {
+            return value.startsWith('formula=');
+        }
+        return true;
+    }
+    return false;
+}
+
 let PowerSchema = new Schema({
     name: {type: String, required: true},
-    shortDescr:{type: String, required: true},
-    fullDescr:{type: String, required: true},
-    powerTag:{type: String, required: true},
+    shortDescr:{type: String, required: false},
+    fullDescr:{type: String, required: false},
+    powerTag:{type: String, required: false},
     assRules_text:{type: String, required: false},
     prerequisite:{type: [String], required: false},
-    maxTaken:{type: Number, required: true, default: 1},
-    abilityMods: {
-        type: Map, of: Number,
-        default: {},
-        required: true}
+    maxTaken:{type: String, required: true,
+        validate: {
+            validator: val => numberOrFormula(val),
+            message: 'Must be a Number or a formula'
+}
+    },
+    abilityMods: {type: [String], required: true}
 });
 
-module.exports = mongoose.model('PowerModel', PowerSchema );
+
+module.exports = mongoose.model('Power', PowerSchema );
