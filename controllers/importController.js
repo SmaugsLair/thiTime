@@ -86,7 +86,7 @@ exports.upload = function (req, res, next) {
         }
         let powers = [];
         for (let item of excelData.PowersList) {
-            const stub = {abilityMods: []};
+            const stub = {abilityMods: [], powerSets:[]};
             for (const [key, value] of Object.entries(item)) {
                 if (key.startsWith('set_')) {
                     let psName = key.substring(4);
@@ -99,6 +99,7 @@ exports.upload = function (req, res, next) {
                             ps.powers.set(value.toString(), [item.name]);
                         }
                     }
+                    stub.powerSets.push(psName+':'+value);
                 }
                 else if (key.startsWith('am_')) {
                     let ability = key.substring(3);
