@@ -87,6 +87,7 @@ exports.upload = function (req, res, next) {
         let powers = [];
         for (let item of excelData.PowersList) {
             const stub = {abilityMods: [], powerSets:[]};
+            let minTier = 11;
             for (const [key, value] of Object.entries(item)) {
                 if (key.startsWith('set_')) {
                     let psName = key.substring(4);
@@ -99,6 +100,7 @@ exports.upload = function (req, res, next) {
                             ps.powers.set(value.toString(), [item.name]);
                         }
                     }
+                    minTier = Math.min(minTier, value);
                     stub.powerSets.push(psName+':'+value);
                 }
                 else if (key.startsWith('am_')) {
@@ -113,6 +115,9 @@ exports.upload = function (req, res, next) {
                 else {
                     stub[key] = value;
                 }
+            }
+            if (minTier < 11) { //found one
+                stub['minTier'] = minTier;
             }
             let newPower = new Power(stub);
             powers.push(newPower);

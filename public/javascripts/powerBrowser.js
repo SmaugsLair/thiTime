@@ -1,6 +1,7 @@
 let table = new Tabulator("#powersTable", {
     //height:'600px',
     //pagination: 'local',
+    virtualDom: false,
     tooltips: true,
     responsiveLayout:"collapse",
     responsiveLayoutCollapseStartOpen:false,
@@ -20,10 +21,11 @@ let table = new Tabulator("#powersTable", {
     layout:"fitData", //fit columns to width of table (optional)
     columns:[ //Define Table Columns
         {formatter:"responsiveCollapse", width:30, minWidth:30, hozAlign:"center", resizable:false, headerSort:false},
-        {title:"Name", field:"name", headerFilter:true, width: '25%'},
-        {title:"Description", field:"shortDescr", headerSort:false},
+        {title:"Name", field:"name", headerFilter:true, headerSort:true},
+        {title:"Tier", field:"minTier", width:"70", hozAlign:"center", headerFilter:true, headerSort:true },
         {title:"Tag", field:"powerTag", headerFilter:true, headerSort:false},
         {title:"Max", field:"maxTaken", width:"70", hozAlign:"center" },
+        {title:"Description", field:"shortDescr", headerSort:false},
         {title:"Details", field:"fullDescr", headerSort:false},
         {title:"Prereq", field:"prerequisite", headerFilter:true, headerSort:false},
         {title:"Ability Mods", field:"abilityMods", headerFilter:true, headerSort:false},

@@ -29,7 +29,8 @@ let PowerSchema = new Schema({
 }
     },
     abilityMods: {type: [String], required: true},
-    powerSets: {type: [String], required:false}
+    powerSets: {type: [String], required:false},
+    minTier: {type: Number, required: false}
 });
 
 
