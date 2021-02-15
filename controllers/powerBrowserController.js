@@ -26,7 +26,6 @@ exports.viewPowerSet = function(req, res, next) {
             if (err) {
                 return next(err);
             }
-            //console.log('powers length:'+docs.length);
             let powerMap = new Map();
             docs.forEach(function(p){
                 powerMap.set(p.name, p);
@@ -37,14 +36,10 @@ exports.viewPowerSet = function(req, res, next) {
             }
             for (let [key, powerList] of powerSet.powers) {
                 powerList.forEach(function (powerName) {
-                    //console.log(key + ":" + powerName);
                     let power = powerMap.get(powerName);
-                    //console.log(power);
                     powers[key - 1].push(power);
                 });
             }
-            //console.log(powers);
-
             res.render('powerSet', { title: 'Power Set:' + powerSet.name,
                 powerSet: powerSet,
                 abMods: abMods,
@@ -55,10 +50,6 @@ exports.viewPowerSet = function(req, res, next) {
             });
         });
     });
-}
-
-function logMapElements(value, key, map) {
-    console.log(`m[${key}] = ${value}`);
 }
 
 //view all powers

@@ -43,7 +43,6 @@ exports.gm_detail = function(req, res, next) {
 
 
 exports.gm_collection = function(req, res, next) {
-    console.log('gm_collection');
 
     const gameMaster = req.session.user;
     async.parallel({
