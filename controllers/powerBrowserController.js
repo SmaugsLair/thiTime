@@ -22,15 +22,37 @@ exports.viewPowerSet = function(req, res, next) {
         for (let [key, val] of powerSet.abilityMods) {
             abMods.push(key+':'+val);
         }
-        let powers = [];
-        for (let [key, val] of powerSet.powers) {
-            powers.push(key+':'+val);
-        }
-        res.render('powerSet', { title: 'Power Set:' + powerSet.name,
-            powerSet: powerSet,
-            abMods: abMods,
-            powers: powers,
-            user: req.session.user
+        Power.find({}, 'name shortDescr fullDescr').exec(function (err, docs) {
+            if (err) {
+                return next(err);
+            }
+            console.log('powers length:'+docs.length);
+            let powerMap = new Map();
+            docs.forEach(function(p){
+                powerMap.set(p.name, p);
+            });
+            let powers = [];
+            for (i = 0; i < 10; ++i) {
+                powers.push([]);
+            }
+            for (let [key, powerList] of powerSet.powers) {
+                powerList.forEach(function (powerName) {
+                    console.log(key + ":" + powerName);
+                    let power = powerMap.get(powerName);
+                    console.log(power);
+                    powers[key - 1].push(power);
+                });
+            }
+            //console.log(powers);
+
+            res.render('powerSet', { title: 'Power Set:' + powerSet.name,
+                powerSet: powerSet,
+                abMods: abMods,
+                powers: powers,
+                tabulatorJS: true,
+                powerSetJS: true,
+                user: req.session.user
+            });
         });
     });
 }
@@ -47,7 +69,9 @@ exports.viewPowers = function(req, res, next) {
             res.render('powerBrowser',
                 { title: 'Powers',
                     user: req.session.user,
-                    tabulator: true});
+                    tabulatorJS: true,
+                    powerBrowserJS: true,
+                });
         });
 }
 

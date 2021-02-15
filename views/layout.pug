@@ -4,7 +4,7 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
-    if(tabulator)
+    if(tabulatorJS)
       link(rel='stylesheet', href='/css/tabulator.css')
 
   #container
@@ -50,7 +50,10 @@ html
     script(src='/javascripts/refresh.js')
   if (announce)
     script(src='/javascripts/announce.js')
-  if(tabulator)
+  if(tabulatorJS)
     script(src='/js/tabulator.js')
+  if(powerBrowserJS)
     script(src='/javascripts/powerBrowser.js')
+  if(powerSetJS)
+    script(src='/javascripts/powerSet.js')
 

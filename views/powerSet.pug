@@ -14,9 +14,10 @@ block content
         td(colspan=2) #{abMods}
       tr
         td(colspan=2) #{powerSet.powersText}
-      each item in powers
-        tr
-          td(colspan=2) #{item}
+  each list, index in powers
+    div(id = 'powersTable'+index)
+  script.
+    let powers = !{JSON.stringify(powers)};
 
 
 

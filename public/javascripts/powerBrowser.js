@@ -1,23 +1,13 @@
 let table = new Tabulator("#powersTable", {
-    height:'600px',
-    pagination: 'local',
+    //height:'600px',
+    //pagination: 'local',
     tooltips: true,
     responsiveLayout:"collapse",
     responsiveLayoutCollapseStartOpen:false,
     responsiveLayoutCollapseFormatter:function(data){
-        //data - an array of objects containing the column title and value for each cell
-        /*let table = document.createElement("table");
+        let list = document.createElement("ul");
         data.forEach(function(col){
-            let tr = document.createElement("tr");
-            item.innerHTML = "<td>" + col.title + "</td><td style='white-space: pre-wrap'>" + col.value+ "</td>";
-            table.appendChild(tr);
-        });
-
-        return Object.keys(data).length ? list : "";*/
-        var list = document.createElement("ul");
-
-        data.forEach(function(col){
-            console.log(col.title+'.'+col.value);
+            //console.log(col.title+'.'+col.value);
             if (col.value!=='&nbsp;') {
                 let item = document.createElement("li");
                 item.style.whiteSpace = 'normal';
@@ -25,7 +15,6 @@ let table = new Tabulator("#powersTable", {
                 list.appendChild(item);
             }
         });
-
         return Object.keys(data).length ? list : "";
     },
     layout:"fitData", //fit columns to width of table (optional)
