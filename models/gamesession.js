@@ -18,4 +18,4 @@ GameSessionSchema.pre('deleteOne', function(next) {
 });
 
 //Export function to create "SomeModel" model class
-module.exports = mongoose.model('GameSessionModel', GameSessionSchema );
+module.exports = mongoose.model('GameSession', GameSessionSchema );

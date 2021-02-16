@@ -54,4 +54,4 @@ TimeLineEventSchema.methods.rowClass = function() {
     return '';
   };*/
 
-module.exports = mongoose.model('TimeLineEventModel', TimeLineEventSchema );
+module.exports = mongoose.model('TimeLineEvent', TimeLineEventSchema );

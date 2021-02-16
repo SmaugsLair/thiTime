@@ -13,4 +13,4 @@ let CollectedEventSchema = new Schema({
     //eventType: enum //player, npc, gm
 });
 
-module.exports = mongoose.model('CollectedEventModel', CollectedEventSchema );
+module.exports = mongoose.model('CollectedEvent', CollectedEventSchema );

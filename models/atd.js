@@ -10,4 +10,4 @@ let ActionTimeDefaultSchema = new Schema({
 });
 
 //Export function to create "SomeModel" model class
-module.exports = mongoose.model('ActionTimeDefaultModel', ActionTimeDefaultSchema );
+module.exports = mongoose.model('ActionTimeDefault', ActionTimeDefaultSchema );

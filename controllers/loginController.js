@@ -1,4 +1,4 @@
-const GameMaster = require('../models/gamemaster');
+const GameMaster = require('../models/user');
 
 exports.index = function(req, res) {
     res.render('login');

@@ -1,4 +1,4 @@
-const GameMaster = require('../models/gamemaster');
+const GameMaster = require('../models/user');
 const async = require('async');
 const GameSession = require('../models/gamesession');
 const CollectedEvent = require('../models/collectedevent');
