@@ -35,8 +35,8 @@ for (index = 0; index < 10; ++index) {
                     headerSort: false
                 },
                 {title: "Name", field: "name", width: '25%', headerSort: false},
-                {title: "Description", field: "shortDescr", headerSort: false},
-                {title: "Details", field: "fullDescr", headerSort: false}
+                {title: "Short Description", field: "shortDescr", headerSort: false},
+                {title: "Full Description", field: "fullDescr", headerSort: false}
             ]
         });
     }

@@ -19,7 +19,7 @@ let PowerSchema = new Schema({
     name: {type: String, required: true},
     shortDescr:{type: String, required: false},
     fullDescr:{type: String, required: false},
-    powerTag:{type: String, required: false},
+    powerTag:{type: [String], required: false},
     assRules:{type: String, required: false},
     prerequisite:{type: [String], required: false},
     maxTaken:{type: String, required: true,
@@ -30,7 +30,9 @@ let PowerSchema = new Schema({
     },
     abilityMods: {type: [String], required: true},
     powerSets: {type: [String], required:false},
-    minTier: {type: Number, required: false}
+    minTier: {type: Number, required: false},
+    metaPower: {type: Boolean, required: true, default: false},
+    subPowers: {type: [String], required: false}
 });
 
 

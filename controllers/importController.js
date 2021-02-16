@@ -109,7 +109,13 @@ exports.upload = function (req, res, next) {
                 }
                 else if (key === 'prerequisite') {
                     if (value !== 'none' ) {
-                        stub[key] = value.split(' OR ')
+                        stub[key] = trimStringArray(value.split('OR'));
+
+                    }
+                }
+                else if (key === 'subPowers') {
+                    if (value) {
+                        stub[key] = value.split(',');
                     }
                 }
                 else {
@@ -274,4 +280,10 @@ function compareStringMaps(map1, map2) {
         }
     }
     return true;
+}
+function trimStringArray(array) {
+    for (var i = 0; i < array.length; i++) {
+        array[i] = array[i].trim();
+    }
+    return array;
 }
