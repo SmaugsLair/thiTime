@@ -36,14 +36,4 @@ let table = new Tabulator("#powersTable", {
 
     ],
     ajaxURL:"/powerList",
-    /*rowClick:function(e, row){
-        let cell = row.getCell('fullDescr');
-        console.log(cell.getElement().style.height);
-        //console.log(cell.getElement().style);
-        cell.getElement().style.color = 'red';
-        cell.getElement().style.whiteSpace = 'pre-wrap';
-        let height = cell.getElement().style.height;
-        cell.getElement().style.height = height+100;
-        },
-*/
 });

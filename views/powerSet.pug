@@ -16,7 +16,11 @@ block content
         td(colspan=2) #{powerSet.powersText}
   each list, index in powers
     if (list.length > 0)
-      button(id='toggle' + index, onclick='toggle(this, "powersTable' + index + '")') Hide Tier #{index + 1} (#{list.length})
+      span.checkButton(id ='checkButton'+index, onclick='check('+index+')')
+        input.check(type='checkbox', checked, id='toggle'+index, onclick='return(true)')
+        //input.check(type='checkbox', checked, id='toggle'+index, onclick='toggle(' + index + ')')
+        output Tier #{index + 1} (#{list.length})
+      //button(id='toggle' + index, onclick='toggleButton(this, "powersTable' + index + '")') Hide Tier #{index + 1} (#{list.length})
   each list, index in powers
     div(id = 'tierZone'+index)
       div(id = 'powersTable'+index)

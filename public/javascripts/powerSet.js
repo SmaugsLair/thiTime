@@ -45,14 +45,14 @@ for (index = 0; index < 10; ++index) {
     }
 }
 for (index = 0; index < 10; ++index) {
-    let toggle = document.getElementById('toggle'+index);
-    if (toggle) {
-        toggle.click();
+    let checkButton = document.getElementById('checkButton'+index);
+    if (checkButton) {
+        checkButton.click();
     }
 }
-function toggle(button, id) {
+/*
+function toggleButton(button, id) {
     console.log(button.innerHTML);
-    let x = document.getElementById(id);
     if (x.style.display === 'none') {
         console.log('showing');
         x.style.display = 'block';
@@ -65,5 +65,19 @@ function toggle(button, id) {
         let str =button.innerHTML.replace('Hide','Show');
         console.log('new str: '+str);
         button.innerHTML = str;
+    }
+}*/
+function check(index) {
+    console.log('check:'+index);
+    let checkbox = document.getElementById('toggle'+index)
+    checkbox.checked = !checkbox.checked;
+    let x = document.getElementById('tierZone'+index);
+    let checkButton = document.getElementById('checkButton'+index)
+    if (checkbox.checked) {
+        x.style.display = 'block';
+        checkButton.style.background = '#7f7';
+    } else {
+        x.style.display = 'none';
+        checkButton.style.background = '#faa';
     }
 }

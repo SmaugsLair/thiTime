@@ -235,4 +235,14 @@ pre {
 table.powerSet td {
   border: 1px solid black;
 }
+.checkButton {
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 2px 2px;
+  cursor: pointer;
+  color: black;
+}
+.check {
+  display: none;
+}
 
