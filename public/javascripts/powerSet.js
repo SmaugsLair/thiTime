@@ -78,6 +78,6 @@ function check(index) {
         checkButton.style.background = '#7f7';
     } else {
         x.style.display = 'none';
-        checkButton.style.background = '#faa';
+        checkButton.style.background = '#caa';
     }
 }
