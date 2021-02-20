@@ -21,8 +21,8 @@ let table = new Tabulator("#powersTable", {
     layout:"fitData", //fit columns to width of table (optional)
     columns:[ //Define Table Columns
         {formatter:"responsiveCollapse", width:30, minWidth:30, hozAlign:"center", resizable:false, headerSort:false},
-        {title:"Name", field:"name", headerFilter:true, headerSort:true},
-        {title:"Tier", field:"minTier", width:"70", hozAlign:"center", headerFilter:true, headerSort:true },
+        {title:"Name", field:"name", headerFilter:true, headerSort:true, headerSortTristate:true},
+        {title:"Tier", field:"minTier", width:"70", hozAlign:"center", headerFilter:true, headerSort:true, headerSortTristate:true },
         {title:'Meta', field: 'metaPower', headerSort:false, formatter:"tickCross", formatterParams:{crossElement:false}},
         {title:"Tag", field:"powerTag", headerFilter:true, headerSort:false},
         {title:"Max", field:"maxTaken", width:"70", hozAlign:"center" },
@@ -33,7 +33,8 @@ let table = new Tabulator("#powersTable", {
         {title:"Associated Rules", field:"assRules", headerFilter:true, headerSort:false},
         {title:"Power Sets", field:"powerSets", headerFilter:true, headerSort:false},
         {title:"Subpowers", field: "subPowers", headerFilter:true }
-
     ],
+    initialSort:[
+        {column:"name", dir:"asc"}],
     ajaxURL:"/powerList",
 });

@@ -16,6 +16,7 @@ function numberOrFormula (value) {
 }
 
 let PowerSchema = new Schema({
+    ssid: {type:String, required: true},
     name: {type: String, required: true},
     shortDescr:{type: String, required: false},
     fullDescr:{type: String, required: false},
@@ -26,7 +27,7 @@ let PowerSchema = new Schema({
         validate: {
             validator: val => numberOrFormula(val),
             message: 'Must be a Number or a formula'
-}
+        }
     },
     abilityMods: {type: [String], required: true},
     powerSets: {type: [String], required:false},

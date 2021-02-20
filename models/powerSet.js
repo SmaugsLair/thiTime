@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let PowerSetSchema = new Schema({
+    ssid: {type:String, required: true},
     name: {type: String, required: true},
     //lastUpdate: {type: Date, required: false},
     openText:{type: String, required: true},

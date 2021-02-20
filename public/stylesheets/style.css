@@ -245,4 +245,9 @@ table.powerSet td {
 .check {
   display: none;
 }
+span.delete {
+  color: red;
+  border: 1px solid red;
+  font-weight: bold;
+}
 

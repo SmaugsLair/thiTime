@@ -171,8 +171,8 @@ function ExcelDateToJSDate(date) {
 
 function parseDataIntoModels(Model, array, results, errorMessages, complete, next) {
     for (let newItem of array) {
-        let messageDetails = newItem.name;
-        Model.findOne({ 'name': newItem.name }, function (err, oldItem) {
+        let messageDetails = newItem.name+':'+newItem.ssid;
+        Model.findOne({ 'ssid': newItem.ssid }, function (err, oldItem) {
             if (err) {
                 errorMessages.push('Unexpected error while searching for:'+messageDetails+':'+err.message);
                 complete();

@@ -9,6 +9,7 @@ const playerController = require('../controllers/playerController');
 const diceController = require('../controllers/diceController');
 const importController = require('../controllers/importController');
 const powerBrowserController = require('../controllers/powerBrowserController');
+const powerController = require('../controllers/powerController');
 
 function requireLogin (req, res, next) {
   let gameMaster = req.session.user;
@@ -70,5 +71,8 @@ router.get('/powerSetBrowser', powerBrowserController.viewPowerSets);
 router.get('/powerSet/:psid', powerBrowserController.viewPowerSet);
 router.get('/powerBrowser', powerBrowserController.viewPowers);
 router.get('/powerList', powerBrowserController.powerList);
+
+router.get('/powersAdmin', requireLogin, powerController.viewPowers);
+router.post('/power/delete/:powerId', requireLogin, powerController.powerDelete);
 
 module.exports = router;
