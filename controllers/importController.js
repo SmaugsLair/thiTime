@@ -88,8 +88,14 @@ exports.upload = function (req, res, next) {
         for (let item of excelData.PowersList) {
             const stub = {abilityMods: [], powerSets:[]};
             let minTier = 11;
-            for (const [key, value] of Object.entries(item)) {
+            for (const [k, value] of Object.entries(item)) {
+                //console.log('k  :'+k+':');
+                let key = k.trim();
+                //if (k.length != key.length) {
+
+               // }
                 if (key.startsWith('set_')) {
+                    console.log('key:'+key+':');
                     let psName = key.substring(4);
                     const ps = powerSets.find(({ name }) => name === psName);
                     if (ps) {
@@ -99,6 +105,9 @@ exports.upload = function (req, res, next) {
                         } else {
                             ps.powers.set(value.toString(), [item.name]);
                         }
+                    }
+                    else {
+                        errorMessages.push('possible error with PowersList label: '+key+". Does " +psName+ " exist in the PowerSet sheet?");
                     }
                     minTier = Math.min(minTier, value);
                     stub.powerSets.push(psName+':'+value);
@@ -179,7 +188,7 @@ function parseDataIntoModels(Model, array, results, errorMessages, complete, nex
             }
             else {
                 if (oldItem) {
-                    var changes = compareMongooseObjects(oldItem, newItem, Model);
+                    let changes = compareMongooseObjects(oldItem, newItem, Model);
                     if (_.isEmpty(changes)) {
                         results.unchanged.push(newItem.name);
                         complete();
@@ -282,7 +291,7 @@ function compareStringMaps(map1, map2) {
     return true;
 }
 function trimStringArray(array) {
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         array[i] = array[i].trim();
     }
     return array;

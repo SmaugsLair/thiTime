@@ -28,14 +28,16 @@ for (index = 0; index < 10; ++index) {
                 {
                     formatter: "responsiveCollapse",
                     title: index + 1,
-                    width: 30,
-                    minWidth: 30,
+                    width: "1%",
                     hozAlign: "center",
+                    cellHozAlign: "center",
                     resizable: false,
                     headerSort: false
                 },
-                {title: "Name", field: "name", width: '25%', headerSort: false},
-                {title: "Short Description", field: "shortDescr", headerSort: false},
+                {title: "Name", field: "name", width: "25%", headerSort: false, formatter:"textarea"},
+                {title: "Short Description", field: "shortDescr", width: "50%", headerSort: false, formatter:"textarea"},
+                {title: "Prerequisites", field: "prerequisite", width: '15%', headerSort: false, formatter:"textarea"},
+                {title: "Limit", field: "maxTaken", width: '5%', headerSort: false, formatter:"textarea"},
                 {title: "Full Description", field: "fullDescr", headerSort: false}
             ]
         });
@@ -68,7 +70,6 @@ function toggleButton(button, id) {
     }
 }*/
 function check(index) {
-    console.log('check:'+index);
     let checkbox = document.getElementById('toggle'+index)
     checkbox.checked = !checkbox.checked;
     let x = document.getElementById('tierZone'+index);

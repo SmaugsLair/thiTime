@@ -6,6 +6,7 @@ exports.viewPowerSets = function(req, res, next) {
     PowerSet.find({})
         .exec(function (err, powerSets) {
             if (err) { return next(err); }
+            powerSets.sort((a, b) => (a.name > b.name) ? 1 : -1)
             res.render('powerSetBrowser',
                 { title: 'PowerSets',
                     user: req.session.user,
@@ -22,12 +23,16 @@ exports.viewPowerSet = function(req, res, next) {
         for (let [key, val] of powerSet.abilityMods) {
             abMods.push(key+':'+val);
         }
-        Power.find({}, 'name shortDescr fullDescr').exec(function (err, docs) {
+        //Power.find({}).exec(function (err, docs) {
+        Power.find({}, 'name shortDescr fullDescr prerequisite maxTaken').exec(function (err, docs) {
             if (err) {
                 return next(err);
             }
             let powerMap = new Map();
             docs.forEach(function(p){
+                if (p.prerequisite) {
+                    console.log('power:'+p.name+', prerequisite:'+p.prerequisite);
+                }
                 powerMap.set(p.name, p);
             });
             let powers = [];
@@ -37,6 +42,7 @@ exports.viewPowerSet = function(req, res, next) {
             for (let [key, powerList] of powerSet.powers) {
                 powerList.forEach(function (powerName) {
                     let power = powerMap.get(powerName);
+                    console.log('power:'+power.name+', prerequisite:'+power.prerequisite);
                     powers[key - 1].push(power);
                 });
             }
