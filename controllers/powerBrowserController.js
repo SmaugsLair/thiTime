@@ -30,9 +30,6 @@ exports.viewPowerSet = function(req, res, next) {
             }
             let powerMap = new Map();
             docs.forEach(function(p){
-                if (p.prerequisite) {
-                    console.log('power:'+p.name+', prerequisite:'+p.prerequisite);
-                }
                 powerMap.set(p.name, p);
             });
             let powers = [];
@@ -42,7 +39,6 @@ exports.viewPowerSet = function(req, res, next) {
             for (let [key, powerList] of powerSet.powers) {
                 powerList.forEach(function (powerName) {
                     let power = powerMap.get(powerName);
-                    console.log('power:'+power.name+', prerequisite:'+power.prerequisite);
                     powers[key - 1].push(power);
                 });
             }
