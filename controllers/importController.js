@@ -60,8 +60,8 @@ exports.upload = function (req, res, next) {
         });
 
         let errorMessages = [];
-        //let validateCount = 0;
 
+        let powerSetKeys= new Set();
         let powerSets = [];
         for (let item of excelData.PowerSetInformation) {
             const stub = {abilityMods: new Map(), powers: new Map()};
@@ -77,23 +77,31 @@ exports.upload = function (req, res, next) {
                     stub.abilityMods.set(ability, Number(value));
                 }
                 else {
+                    powerSetKeys.add(key);
                     stub[key] = value;
                 }
             }
             const newPs = new PowerSet(stub);
             powerSets.push(newPs);
-
         }
+
+       /* let samplePsSchema = new PowerSet().schema;
+        samplePsSchema.eachPath(function (value){
+            powerSetKeys.delete(value);
+        });
+        powerSetKeys.forEach(function (value){
+            errorMessages.push('Unexpected column key:'+value+' found in row 4 of PowerSetInformation sheet');
+        });*/
+        checkForUnknownKeys(new PowerSet().schema, powerSetKeys, errorMessages, 'PowerSetInformation');
+
         let powers = [];
+        let powerKeys= new Set();
+        let errorSet = new Set();
         for (let item of excelData.PowersList) {
             const stub = {abilityMods: [], powerSets:[]};
             let minTier = 11;
             for (const [k, value] of Object.entries(item)) {
-                //console.log('k  :'+k+':');
                 let key = k.trim();
-                //if (k.length != key.length) {
-
-               // }
                 if (key.startsWith('set_')) {
                     let psName = key.substring(4);
                     const ps = powerSets.find(({ name }) => name === psName);
@@ -106,7 +114,7 @@ exports.upload = function (req, res, next) {
                         }
                     }
                     else {
-                        errorMessages.push('possible error with PowersList label: '+key+". Does " +psName+ " exist in the PowerSet sheet?");
+                        errorSet.add('possible error with PowersList label: '+key+". Does " +psName+ " exist in the PowerSet sheet?");
                     }
                     minTier = Math.min(minTier, value);
                     stub.powerSets.push(psName+':'+value);
@@ -127,6 +135,7 @@ exports.upload = function (req, res, next) {
                     }
                 }
                 else {
+                    powerKeys.add(key);
                     stub[key] = value;
                 }
             }
@@ -137,6 +146,19 @@ exports.upload = function (req, res, next) {
             powers.push(newPower);
 
         }
+
+       /* let samplePowerSchema = new Power().schema;
+        samplePowerSchema.eachPath(function (value){
+            powerKeys.delete(value);
+        });
+        powerKeys.forEach(function (value){
+            errorMessages.push('Unexpected column key:'+value+' found in row 4 of PowersList sheet');
+        });*/
+        checkForUnknownKeys(new Power().schema, powerKeys, errorMessages, 'PowersList');
+
+        errorSet.forEach(function(value) {
+            errorMessages.push(value);
+        });
 
         let psResults = {created:[], updated:[], unchanged:[]};
         let pResults = {created:[], updated:[], unchanged:[]};
@@ -294,4 +316,13 @@ function trimStringArray(array) {
         array[i] = array[i].trim();
     }
     return array;
+}
+
+function checkForUnknownKeys(schema, keySet, errorMessages, sheetName) {
+    schema.eachPath(function (value){
+        keySet.delete(value);
+    });
+    keySet.forEach(function (value){
+        errorMessages.push('Unexpected column label:'+value+' found in row 4 of '+sheetName+' sheet');
+    });
 }
