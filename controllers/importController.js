@@ -95,7 +95,6 @@ exports.upload = function (req, res, next) {
 
                // }
                 if (key.startsWith('set_')) {
-                    console.log('key:'+key+':');
                     let psName = key.substring(4);
                     const ps = powerSets.find(({ name }) => name === psName);
                     if (ps) {
