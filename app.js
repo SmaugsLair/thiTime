@@ -28,8 +28,8 @@ app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 app.use(session({
   cookieName: 'session',
   secret: 'iCantBelieveThatTheAnsweris42',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
+  duration: 60 * 60 * 1000, //1 hours
+  activeDuration: 60 * 60 * 1000, //refreshes for an hour
 }));
 
 //Import the mongoose module
