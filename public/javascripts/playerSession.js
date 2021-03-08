@@ -3,7 +3,7 @@ const gsid = document.getElementById("gameSessionID").value;
 const ws = new WebSocket('ws://'+location.host);
 //Evennode has a 60 second timeout on websockets
 let start = Date.now();
-var wsPing = setInterval(pinger, 55000);
+var wsPing = setInterval(pinger, 30000);
 function pinger() {
     ws.send('keepAlive');
 }

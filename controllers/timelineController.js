@@ -181,9 +181,7 @@ exports.timeline_event_update = function(req, res, next) {
             };
         }
 
-
         const hidden = (req.body.hidden? true: false);
-
 
         let actionParams = {
             name: name,

@@ -37,7 +37,7 @@ block content
                     - if (actionTime.name === 'Recovery') total -= item.stun;
                     option(value=total) #{actionTime.name} (#{total})
               td
-                input(type='checkbox', name='hidden', id='hidden'+index, value=item.hidden, checked=item.hidden)
+                input(type='checkbox', name='hidden', id='hidden'+index, checked=item.hidden)
               td
                 input.time(type='number', name='time', id='time'+index, min=-999, max=999, value=item.time, required=true)
               td.lastEvent

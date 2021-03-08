@@ -15,6 +15,9 @@ exports.newServer= function(server) {
                    }
                });
            }
+           /*else {
+               console.log('WS keepAlive');
+           }*/
         });
     });
 }
