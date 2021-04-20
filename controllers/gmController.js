@@ -3,6 +3,7 @@ const async = require('async');
 const GameSession = require('../models/gamesession');
 const CollectedEvent = require('../models/collectedevent');
 const ActionTimeDefault = require('../models/atd');
+const secQs = require('../data/securityQuestions');
 
 
 exports.index = function(req, res) {
@@ -78,6 +79,7 @@ exports.update = function (req, res, next) {
     const gameMaster = req.session.user;
     res.render('gm_update',
         { title: 'Game Master Update',
+            securityQuestions: secQs.securityQuestions,
             user: gameMaster}
             );
 }
@@ -88,7 +90,9 @@ exports.applyUpdate = function (req, res, next) {
     const params = {
         name: req.body.username,
         displayName: req.body.displayName,
-        email: req.body.email
+        email: req.body.email,
+        question: req.body.question,
+        answer: req.body.answer
     };
     GameMaster.findByIdAndUpdate(gameMaster._id, params, {new:true}, function (err, result) {
         if (err) {
@@ -109,6 +113,57 @@ exports.updatePassword = function (req, res, next) {
 
 exports.applyUpdatePassword = function (req, res, next) {
     const gameMaster = req.session.user;
+    let error = passwordUpdate(req, res,next, gameMaster._id);
+    if (error) {
+        res.render('password_update',
+            {
+                title: 'Password Update',
+                user: gameMaster,
+                error: error
+            }
+        );
+    }
+}
+
+exports.forgotPassword = function(req, res) {
+    res.render('forgotPassword',
+        { title: 'Reset forgotten password',
+            securityQuestions: secQs.securityQuestions});
+}
+
+exports.resetForgottenPassword = function (req, res, next) {
+    const params = {
+        question: req.body.question,
+        answer: req.body.answer
+    };
+    if (req.body.idtype === 'email') {
+        params.email = req.body.username;
+    }
+    else {
+        params.name = req.body.username;
+    }
+    GameMaster.findOne(params, function(err, user) {
+        let error;
+        if (user) {
+            error = passwordUpdate(req, res, next, user._id);
+        }
+        else {
+            error = 'Invalid user details'
+        }
+        if (error) {
+            res.render('forgotPassword',
+                {
+                    title: 'Reset forgotten password',
+                    error: error,
+                    securityQuestions: secQs.securityQuestions
+                }
+            );
+        }
+    });
+
+}
+
+function passwordUpdate(req, res, next, userID) {
     const password = req.body.password1;
     const confirm = req.body.password2;
     let error;
@@ -122,7 +177,7 @@ exports.applyUpdatePassword = function (req, res, next) {
                     hash: temp.hash,
                     salt: temp.salt
                 };
-                GameMaster.findByIdAndUpdate(gameMaster._id, params, {}, function (err, result) {
+                GameMaster.findByIdAndUpdate(userID, params, {}, function (err, result) {
                     if (err) {
                         return next(err);
                     }
@@ -142,15 +197,6 @@ exports.applyUpdatePassword = function (req, res, next) {
     else {
         error = 'Supply a password';
     }
-    if (error) {
-        res.render('password_update',
-            {
-                title: 'Password Update',
-                user: gameMaster,
-                error: error
-            }
-        );
-    }
-
+    return error;
 }
 

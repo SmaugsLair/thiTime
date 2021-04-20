@@ -16,6 +16,17 @@ block content
         td
           input(type='text', name='email', placeholder='email@provider.org', value=user.email, required=true)
       tr
+        td Security Question (for password reset)
+        td
+          select(name='question', value=user.question, required=true)
+            option(value='', disabled=true, selected=true) Choose Question
+            each question in securityQuestions
+              option(value=question, selected=(question===user.question)) #{question}
+      tr
+        td Security Answer
+        td
+          input(type='text', name='answer', value=user.answer, required=true)
+      tr
         td
         td
           button(type='submit') Update

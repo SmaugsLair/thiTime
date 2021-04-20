@@ -12,6 +12,8 @@ let UserSchema = new Schema({
     email: {type: String, required: true},
     hash: {type: String, required: true},
     salt: {type: String, required: true},
+    question: {type: String, required: true},
+    answer: {type: String, required: true}
 });
 
 UserSchema.methods.setPassword = function(password) {
