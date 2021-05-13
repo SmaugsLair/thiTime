@@ -3,6 +3,8 @@ const async = require('async');
 const mongoose = require('mongoose');
 const GameSession = require('../models/gamesession');
 const TimeLineEvent = require('../models/timelineevent');
+const TimeLineLog = require('../models/timelinelog');
+const DiceRollLog = require('../models/dicerolllog');
 const ActionTimeDefault = require('../models/atd');
 const CollectedEvent = require('../models/collectedevent');
 const ws = require('../websocket')
@@ -28,11 +30,23 @@ exports.load = function(req, res, next) {
                 .exec(callback)
         },
         actionTimes: function(callback) {
-            ActionTimeDefault.find({}, 'name time')
+            ActionTimeDefault.find({})
                 .exec(callback)
         },
         collectedEvents: function(callback) {
             CollectedEvent.find({ 'gameMasterId': gameMaster._id })
+                .exec(callback)
+        },
+        log: function(callback) {
+            TimeLineLog.find({ 'gameSessionId': gsid })
+                //.populate('deltas')
+                .sort('-time')
+                .exec(callback)
+        },
+        diceLog: function(callback) {
+            DiceRollLog.find({ 'gameSessionId': gsid })
+                //.populate('deltas')
+                .sort('-time')
                 .exec(callback)
         },
     }, function(err, results) {
@@ -68,13 +82,15 @@ exports.load = function(req, res, next) {
         //    {name: 'Choose one', time: 0}
         //);
         //results.actionTimes.unshift(unselected);
-        //console.log(results.actionTimes);
+        //console.log("atds:"+results.actionTimes);
         res.render('timeline', { title: 'Timeline',
             gameSession: results.gameSession,
             timeline: results.timeline,
             user: gameMaster,
             actionTimes: results.actionTimes,
             collectedEvents: results.collectedEvents,
+            log: results.log,
+            diceLog: results.diceLog,
             js: 'timeline.js'
         } );
     });
@@ -95,6 +111,7 @@ exports.timeline_event_create = function(req, res, next) {
         if (err) {
             return next(err);
         }
+        saveLog("Created "+ req.body.newEventName, req.params.gsid);
         ws.gameUpdate(req.params.gsid);
         res.redirect('/timeline/' + req.params.gsid);
     });
@@ -122,6 +139,7 @@ exports.timeline_event_import = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
+                saveLog("Imported "+ collectedEvent.name, req.params.gsid);
                 ws.gameUpdate(req.params.gsid);
                 res.redirect('/timeline/' + req.params.gsid);
             });
@@ -148,14 +166,26 @@ exports.timeline_event_update = function(req, res, next) {
             lastEventDate: Date()
         };*/
 
+        let log = "";
+        let logThis = false;
+
         let name = req.body.name;
         if (!name) {
             name = results.timeLineEvent.name;
+        }
+        log += name;
+        if (name != results.timeLineEvent.name) {
+            log += "(renamed)" ;
+            logThis = true;
         }
 
         let stun = req.body.stun;
         if (isNaN(stun)) {
             stun = results.timeLineEvent.stun;
+        }
+        if (stun != results.timeLineEvent.stun) {
+            log += ": Stun set to " + stun;
+            logThis = true;
         }
 
         let time = req.body.time;
@@ -165,12 +195,17 @@ exports.timeline_event_update = function(req, res, next) {
         else {
             time = Number(time);
         }
+        if (time != Number(results.timeLineEvent.time)) {
+            log += ": Time set to " + time;
+            logThis = true;
+        }
 
 
         let color = req.body.color;
         if (!color) {
             color = results.timeLineEvent.color;
         }
+
 
         let actionTime = req.body.actionTime;
         if (!isNaN(actionTime) && actionTime > 0) {
@@ -179,6 +214,9 @@ exports.timeline_event_update = function(req, res, next) {
                 lastEventId: results.timeLineEvent._id
                 /*lastEventDate: Date()*/
             };
+
+            log += ": Action taken using " + actionTime + " units";
+            logThis = true;
         }
 
         const hidden = (req.body.hidden? true: false);
@@ -202,6 +240,9 @@ exports.timeline_event_update = function(req, res, next) {
                     TimeLineEvent.findByIdAndUpdate(req.params.tid, actionParams, {})
                         .exec(callback);
                 }
+                if (logThis) {
+                    saveLog(log, results.timeLineEvent.gameSessionId);
+                }
             }
         }, function(err, updates) {
             if (err) {
@@ -219,6 +260,25 @@ exports.timeline_event_update = function(req, res, next) {
 exports.timeline_event_delete = function(req, res, next) {
 
     TimeLineEvent.deleteOne({_id:req.params.tid}, function deleteTimelineEvent(err) {
+        if (err) { return next(err); }
+        ws.gameUpdate(req.params.gsid);
+        res.redirect('/timeline/'+req.params.gsid);
+    })
+};
+
+
+exports.clearLog = function(req, res, next) {
+
+    TimeLineLog.deleteMany({gameSessionId:req.params.gsid}, function clearLog(err) {
+        if (err) { return next(err); }
+        ws.gameUpdate(req.params.gsid);
+        res.redirect('/timeline/'+req.params.gsid);
+    })
+};
+
+exports.clearDiceLog = function(req, res, next) {
+
+    DiceRollLog.deleteMany({gameSessionId:req.params.gsid}, function clearLog(err) {
         if (err) { return next(err); }
         ws.gameUpdate(req.params.gsid);
         res.redirect('/timeline/'+req.params.gsid);
@@ -305,3 +365,14 @@ exports.timeline_event_updateDeltas = function(req, res, next) {
     });
 
 };
+
+function saveLog(log, gsId) {
+    const timeLineLog = new TimeLineLog(
+        {
+            entry:log,
+            gameSessionId: gsId,
+            time: Date()
+        });
+
+    timeLineLog.save();
+}

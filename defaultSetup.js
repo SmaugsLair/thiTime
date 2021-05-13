@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-console.log('This script populates the default action times. Specified database as argument - e.g.: defaultSetup mongodb+srv://cooluser:coolpassword@cluster0.a9azn.mongodb.net/local_library?retryWrites=true');
+console.log('This script populates the default action times. Specified database as argument - e.g.: defaultSetup mongodb://127.0.0.1/thiTime');
 
 // Get arguments passed on command line
 var userArgs = process.argv.slice(2);

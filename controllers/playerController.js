@@ -3,6 +3,7 @@ const async = require('async');
 const GameSession = require('../models/gamesession');
 const TimeLineEvent = require('../models/timelineevent');
 const ActionTimeDefault = require('../models/atd');
+const DiceRollLog = require('../models/dicerolllog')
 
 exports.playerSessions = function(req, res, next) {
 
@@ -37,7 +38,12 @@ exports.playerSession = function(req, res, next) {
         gameSession: function(callback) {
             GameSession.findById(req.params.gsid)
                 .exec(callback)
-        }
+        },
+        diceLog: function(callback) {
+            DiceRollLog.find({ 'gameSessionId': req.params.gsid })
+                .sort('-time')
+                .exec(callback)
+        },
     }, function(err, results) {
         if (err) {
             return next(err);
@@ -53,6 +59,7 @@ exports.playerSession = function(req, res, next) {
             gameSession: results.gameSession,
             gm: results.gameMaster,
             user: req.session.user,
+            diceLog: results.diceLog,
             js: 'playerSession.js'
         } );
     });
@@ -68,7 +75,6 @@ exports.playerTimeline = function(req, res, next) {
         },
         timeline: function(callback) {
             TimeLineEvent.find({ 'gameSessionId': req.params.gsid, 'hidden': false })
-                //.populate('deltas')
                 .sort('time')
                 .exec(callback)
         },
@@ -123,7 +129,7 @@ exports.playerTimeline = function(req, res, next) {
         res.setHeader('Content-Type', 'application/json');
         res.send({
             timeline: results.timeline,
-            actionTimes: results.actionTimes
+            actionTimes: results.actionTimes,
         } );
     });
 };

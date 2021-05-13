@@ -5,8 +5,9 @@ function hideOverlay(id) {
     document.getElementById('overlay'+id).style.display = "none";
 }
 
-function showDiceRoll(rollText) {
-    let dt = new Date();
+function showDiceRoll(rollLog) {
+    //console.log(rollText);
+    /*let dt = new Date();
     let hours = dt.getHours();
     let minutes = dt.getMinutes();
     let seconds = dt.getSeconds();
@@ -21,6 +22,11 @@ function showDiceRoll(rollText) {
     if (seconds < 10) {
         time += '0';
     }
-    time += seconds;
-    $('#diceMessages ul').prepend('<li>'+time+' | '+rollText+'</li>');
+    time += seconds;*/
+    $('#diceMessages ul').empty();
+    let i;
+    for (i = 0; i < Math.min(10, rollLog.length); i++) {
+        $('#diceMessages ul').append('<li>'+rollLog[i].entry+'</li>')
+    }
+
 }

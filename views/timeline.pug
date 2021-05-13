@@ -108,6 +108,22 @@ block content
   br
   #diceMessages.diceMessages
     ul
+      each line in diceLog
+        li #{line.entry}
+    form(method='POST', id='clearDiceLogForm' action='/timeline/' + gameSession._id + '/clearDiceLog')
+      button(type='submit') Clear Dice Log (#{diceLog.length} entries)
+  br
+  strong
+    div Log of actions, most recent first
+  #logTable
+    ul.log
+      each line in log
+        li #{line.entry}
+  if log.length > 1
+    form(method='POST', id='clearLogForm' action='/timeline/'+gameSession._id+'/clearLog')
+      button(type='submit') Clear Log
+
+
 
   each item, index in timeline
     div.overlay(id='overlay'+index)

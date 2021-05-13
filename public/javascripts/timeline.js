@@ -13,7 +13,7 @@ ws.onmessage = (event) => {
     //console.log(JSON.stringify(data));
     if (data.gameSessionId === gsid) {
         if (data.action === 'diceRoll') {
-            showDiceRoll(data.rollText);
+            showDiceRoll(data.rollLog);
         }
     }
 };

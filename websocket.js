@@ -23,12 +23,12 @@ exports.newServer= function(server) {
 }
 
 
-exports.diceRoll = function(gameSessionId, rollText) {
+exports.diceRoll = function(gameSessionId, rollLog) {
    //console.log('diceRoll:'+gameSessionId);
-    //console.log('diceRoll:'+rollText);
+    //console.log('rollLog:'+rollLog);
     const message = JSON.stringify(
         { 'gameSessionId': gameSessionId,
-            'rollText': rollText,
+            'rollLog': rollLog,
             'action': 'diceRoll'
         });
     sendMessage(message);

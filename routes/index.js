@@ -53,6 +53,8 @@ router.post('/timeline/:tid/:gsid/delete', requireLogin,timelineController.timel
 router.post('/timeline/:tid/:gsid/clone', requireLogin,timelineController.timeline_event_clone);
 router.post('/timeline/:tid/:gsid/updateDeltas', requireLogin,timelineController.timeline_event_updateDeltas);
 router.post('/timeline/:tid/:gsid/collect', requireLogin, timelineController.timeline_event_collect);
+router.post('/timeline/:gsid/clearLog', requireLogin,timelineController.clearLog);
+router.post('/timeline/:gsid/clearDiceLog', requireLogin,timelineController.clearDiceLog);
 
 router.get('/atds', atdController.atd_list);
 

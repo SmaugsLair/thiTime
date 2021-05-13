@@ -16,7 +16,7 @@ ws.onmessage = (event) => {
             filltimeline();
         }
         else if (data.action === 'diceRoll') {
-            showDiceRoll(data.rollText);
+            showDiceRoll(data.rollLog);
         }
     }
 };

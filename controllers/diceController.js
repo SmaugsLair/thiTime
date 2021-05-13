@@ -1,4 +1,6 @@
-const ws = require('../websocket')
+const ws = require('../websocket');
+const DiceRollLog = require('../models/dicerolllog');
+const TimeLineLog = require('../models/timelinelog');
 
 function rollD10() {
     return Math.floor(Math.random() * Math.floor(10)) + 1;
@@ -9,7 +11,33 @@ function calcPercent(sum, count) {
 
 function shareRoll(gsid, charName, sum, dice, type) {
     if (charName) {
-        ws.diceRoll(gsid, charName +' rolled ' + sum + ' ' + JSON.stringify(dice) + ' '+ type);
+        let entry = charName +' rolled ' + sum + ' ' + JSON.stringify(dice) + ' '+ type;
+        //console.log(entry);
+
+        const diceRollLog = new DiceRollLog(
+            {
+                entry:entry,
+                gameSessionId: gsid,
+                time: Date()
+            });
+
+        diceRollLog.save(function (err) {
+            if (err) {
+                //console.log('dice save error');
+                return next(err);
+            }
+            //console.log('dice save ok');
+            if (type === 'DRAMA' || type === 'HERO') {
+                saveLog(entry, gsid);
+            }
+            DiceRollLog.find({ 'gameSessionId': gsid }).sort('-time')
+                .exec(function (err, rollLog) {
+                    if (err) {
+                        console.log('dice find error');
+                        return next(err);
+                    }
+                    ws.diceRoll(gsid, rollLog);
+                })});
     }
 }
 
@@ -43,7 +71,7 @@ exports.roll = function(req, res) {
         sum -= val;
         lowest.push(val);
     }
-    shareRoll(req.body.gameSessionID, charName, sum, dice, 'Basic')
+    shareRoll(req.body.gameSessionID, charName, sum, dice, '')
     res.setHeader('Content-Type', 'application/json');
     res.send({
         dice: JSON.stringify(dice),
@@ -109,4 +137,15 @@ exports.drama = function(req, res) {
             oldSum: Number(req.body.sum),
             sum: sum});
 };
+
+function saveLog(log, gsId) {
+    const timeLineLog = new TimeLineLog(
+        {
+            entry:log,
+            gameSessionId: gsId,
+            time: Date()
+        });
+
+    timeLineLog.save();
+}
 
